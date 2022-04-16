@@ -1,0 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+@import url('color.css');
+
+:root {
+  --body-font: "Nunito", sans-serif;
+  --normal-font-size: 1rem;
+
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+body  {
+  font-family: var(--body-font);
+  color: var(--c-dark);
+}
+
+
+a, a:hover, a:focus, a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+.rotate90 {
+  transform: rotate(90deg);
+  transition: .5s;
+}
+
+/* img {
+  max-width: 80% !important;
+  max-height: auto !important;
+} */

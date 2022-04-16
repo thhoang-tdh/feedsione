@@ -1,0 +1,16 @@
+{% extends '../db_base.html' %}
+{% load static %}
+{% block title %}Article Detail{% endblock %}
+{% block content %}
+
+
+
+<div>
+    <h2>{{ object.title | safe }}</h2>
+    <p>{{ object.date_published }}</p>
+    <p>{{ object.description | safe }}</p>
+</div>
+
+
+
+{% endblock %}

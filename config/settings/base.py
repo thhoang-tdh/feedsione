@@ -3,6 +3,8 @@ Base settings to build other settings files upon.
 """
 from pathlib import Path
 
+from celery.schedules import crontab
+
 import environ
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -77,7 +79,8 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "feedsione.users",
     # Your stuff: custom apps go here
-
+    "feedsione.news",
+    "feedsione.search",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

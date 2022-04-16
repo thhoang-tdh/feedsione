@@ -1,0 +1,9 @@
+
+
+<h1>Articles</h1>
+
+{% for feed in object_list %}
+    <ul>
+        <li><a href="{{ article.get_absolute_url }}">{{feed.title}}</a></li>
+    </ul>
+{% endfor %}

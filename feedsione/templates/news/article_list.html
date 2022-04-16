@@ -1,0 +1,101 @@
+{% extends '../db_base.html' %}
+{% load static %}
+{% block title %}Article List{% endblock %}
+
+
+{% block content %}
+
+
+
+
+
+<div class="header-row row sticky-top cbg-light px-1 pt-1 ms-2" style="border-bottom: 1px solid var(--c-primary)" >
+	<div class="left-items col-xs-6 col-md-6 mt-2">
+		<span class="fs-5 fw-bold">Folder 1</span>
+	</div>
+	<div class="right-items col-xs-6 col-md-6 mt-2">
+		<!-- data-bs-toggle="tooltip" title=""
+            data-bs-original-title="Add New Feeds" -->
+		<div class="button-dropdown pb-2">
+			<button class="btn btn-outline-primary" type="button" data-bs-toggle="tooltip" data-bs-original-title="Mark as Read All">
+				<span class="fs-5 fw-bold">
+					<i class="bi bi-check2-all"></i>
+				</span>
+			</button>
+		</div>
+		<div class="button-dropdown pb-2">
+			<button class="btn btn-outline-primary" type="button">
+				<span class="fs-5 fw-bold">
+					<i class="bi bi-check2-all"></i>
+				</span>
+			</button>
+		</div>
+		<div class="button-dropdown pb-2">
+			<button class="btn btn-outline-primary" type="button">
+				<span class="fs-5 fw-bold">
+					<i class="bi bi-check2-all"></i>
+				</span>
+			</button>
+		</div>
+		<div class="button-dropdown pb-2">
+			<button class="btn btn-outline-primary" type="button">
+				<span class="fs-5 fw-bold">
+					<i class="bi bi-check2-all"></i>
+				</span>
+			</button>
+		</div>
+
+
+	</div>
+</div>
+
+
+
+<div class="mx-3 width-100 " style="top: 70;  ">
+	<h1>Articles</h1>
+	<div class="inf-container row title-only"
+		data-infinite-scroll='{ "path": ".pagination__next", "append": ".item", "history": false }'>
+
+		{% for article in articles %}
+		<!-- <div class="item col-md-6 pb-3"> -->
+		<div class="item pb-3">
+			<div class="card " >
+				<div class="card-header">
+					<div class="fs-5 fw-normal"><a href="{{ article.get_absolute_url }}">{{article.title|safe}}</a></div>
+				</div>
+				<div class="card-body" >
+					<div class="card-text" style=" overflow: hidden;">{{ article.truncated_description | safe}}</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+
+	<!-- status elements -->
+	<div class="page-load-status">
+		<div class="loader-ellips infinite-scroll-request">
+			<span class="loader-ellips__dot"></span>
+			<span class="loader-ellips__dot"></span>
+			<span class="loader-ellips__dot"></span>
+			<span class="loader-ellips__dot"></span>
+		</div>
+		<p class="infinite-scroll-last">End of content</p>
+		<p class="infinite-scroll-error">No more pages to load</p>
+	</div>
+
+	{% if page_obj.has_next %}
+	<!-- <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">More</a> -->
+	<a class="pagination__next" href="?page={{ page_obj.next_page_number }}">More</a>
+
+	<div class="d-flex justify-content-center" >
+		<div class="spinner-border cc-primary" style="width: 3rem; height: 3rem;" role="status">
+			<span class="visually-hidden">Loading...</span>
+		  </div>
+	</div>
+	{% endif %}
+
+
+</div>
+
+
+{% endblock %}
