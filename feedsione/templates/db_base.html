@@ -1,275 +1,184 @@
-{% load static %}
-
-
+{% load static i18n compress%}
 <!DOCTYPE html>
-<html lang="en">
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 
 <head>
-  <meta charset="utf-8" />
-  <title>
-    {% block title %} A New Aggregator Website{% endblock %}
-  </title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible"
+        content="ie=edge">
+  <title>{% block title %}FeedsIOne{% endblock title %}</title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+        content="Feeds Agg App">
+  <meta name="author"
+        content="Thanh Hoang">
 
-  <!-- simple line icon -->
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css"
-    integrity="sha512-QKC1UZ/ZHNgFzVKSAhV5v5j73eeL9EEN289eKAEFaAjgAiobVAnVv/AGuPbXsKl1dNoel3kNr6PYnSiTzVVBCw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="icon"
+        href="{% static 'images/favicons/favicon.ico' %}">
 
+  {% block css %}
+  <!-- Latest compiled and minified Bootstrap CSS -->
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css"
+    integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+  <!-- Your stuff: Third-party CSS libraries go here -->
   <!-- bootstrap icons -->
   <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
-    integrity="sha512-Oy+sz5W86PK0ZIkawrG0iv7XwWhYecM3exvUtMKNJMekGFJtVAhibhRPTpmyTj8+lJCkmWfnpxKgT2OopquBHA=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-  <!-- bootstrap 5 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css"
-    integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
+        integrity="sha512-Oy+sz5W86PK0ZIkawrG0iv7XwWhYecM3exvUtMKNJMekGFJtVAhibhRPTpmyTj8+lJCkmWfnpxKgT2OopquBHA=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display=swap"
+        rel="stylesheet">
 
-  <!-- MDB -->
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        rel="stylesheet" />
 
+  <!-- MDBoostrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.css"
+        rel="stylesheet" />
 
-  <!-- datatables bootstrap css -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
-
-
-  <!-- Custom CSS -->
-  <!-- <link rel="stylesheet" href="base.css" /> -->
-  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}" />
+  <!-- This file stores project-specific CSS -->
+  {% compress css %}
+  <link href="{% static 'css/dashboard.css' %}"
+        rel="stylesheet">
+  {% endcompress %}
+  {% endblock %}
 
 </head>
 
 <body>
 
-  <div class="body">
-    <div class="left-nav">
-      <div class="left-nav-dock">
-        <div>
-          <!-- left dock: logo + nav icon -->
-          <a href="#" class="left-nav-dock-logo" data-bs-toggle="tooltip" title="" data-bs-original-title="Home">
-            <span class="left-nav-dock-logo-icon"><i class="bi bi-rss-fill"></i></span>
-          </a>
+  <!-- side navigation -->
+  <div class="left-nav">
+    <div class="left-nav-dock">
+      <div>
+        <!-- left dock: logo + nav icon -->
+        <a href="#"
+           class="left-nav-dock-logo"
+           data-bs-toggle="tooltip"
+           title=""
+           data-bs-original-title="Home">
+          <span class="left-nav-dock-logo-icon"><i class="bi bi-rss-fill"></i></span>
+        </a>
 
-          <!-- toggle -->
-          <a href="#" onclick="expand_nav_list(); return false;" class="left-nav-dock-link active"
-            data-bs-toggle="tooltip" id="navListToggle" title data-bs-original-title="Feeds Navigation">
-            <span class="left-nav-dock-icon"><i class="bi bi-list"></i></span>
-          </a>
-          <a href="#" class="left-nav-dock-link" data-bs-toggle="tooltip" title=""
-            data-bs-original-title="Add New Feeds">
-            <span class="left-nav-dock-icon"><i class="bi bi-plus-lg"></i></span>
-          </a>
-          <a href="#" class="left-nav-dock-link" data-bs-toggle="tooltip" title="" data-bs-original-title="Search">
-            <span class="left-nav-dock-icon"><i class="bi bi-search"></i></span>
-            <i class="fa-solid fa-magnifying-glass left-nav-dock-icon"></i>
-          </a>
-          <a href="#" class="left-nav-dock-link" data-bs-toggle="tooltip" title=""
-            data-bs-original-title="Filters and Rules">
-            <span class="left-nav-dock-icon"><i class="bi bi-funnel"></i></span>
-          </a>
-        </div>
-        <div>
-          <!-- bot dock: profile, log out ... -->
-          <a href="#" class="left-nav-dock-link" data-bs-toggle="tooltip" title="" data-bs-original-title="Theme">
-            <span class="left-nav-dock-icon"><i class="bi bi-display"></i></span>
-          </a>
-          <a href="#" class="left-nav-dock-link" data-bs-toggle="tooltip" title="" data-bs-original-title="Logout">
-            <span class="left-nav-dock-icon"><i class="bi bi-box-arrow-right"></i></span>
-          </a>
-        </div>
+        <!-- toggle -->
+        <a href="#"
+           onclick="expand_nav_list(); return false;"
+           class="left-nav-dock-link"
+           data-mdb-toggle="tooltip"
+           title="Feeds Navigation">
+          <span class="left-nav-dock-icon"><i class="bi bi-list"></i></span>
+        </a>
+        <a href="#"
+           class="left-nav-dock-link"
+           data-mdb-toggle="tooltip"
+           title="Add New Feeds">
+          <span class="left-nav-dock-icon"><i class="bi bi-plus-lg"></i></span>
+        </a>
+        <a href="#"
+           class="left-nav-dock-link"
+           data-mdb-toggle="tooltip"
+           title="Search">
+          <span class="left-nav-dock-icon"><i class="bi bi-search"></i></span>
+          <i class="fa-solid fa-magnifying-glass left-nav-dock-icon"></i>
+        </a>
+        <a href="#"
+           class="left-nav-dock-link"
+           data-bs-toggle="tooltip"
+           data-mdb-toggle="tooltip"
+           title="Filters and Rules">
+          <span class="left-nav-dock-icon"><i class="bi bi-funnel"></i></span>
+        </a>
       </div>
-      <div class="left-nav-list " id="leftNavList">
-        <div class="mt-5 bg-2-l">
-          <a href="#" class="leftNavList-row-head leftNavList-active" data-bs-toggle="tooltip"
-            data-bs-original-title="Today">
-            <span class="flex-shrink-0 flex-start "><i class="bi bi-rss-fill"></i></span>
-            <strong class="flex-shrink-1 flex-grow-1 ms-3 ">Today</strong>
-            <span class="tc-1-l">111</span>
-          </a>
-          <a href="#" class="leftNavList-row-head " data-bs-toggle="tooltip" data-bs-original-title="Read Later">
-            <span class="flex-shrink-0 flex-start"><i class="bi bi-bookmarks"></i></span>
-            <strong class="flex-shrink-1 flex-grow-1 ms-3">Read Later</strong>
-            <span class="tc-1-l">111</span>
-          </a>
-          <a href="#" class="leftNavList-row-head " data-bs-toggle="tooltip" data-bs-original-title="Read Later">
-            <span class="flex-shrink-0 flex-start"><i class="bi bi-border-all"></i></span>
-            <strong class="flex-shrink-1 flex-grow-1 ms-3">All</strong>
-            <span class="tc-1-l">111</span>
-          </a>
-        </div>
-
-        <!-- folders -->
-        <div class="">
-          <!-- folder 1 -->
-          <div>
-            <!-- row -->
-            <div class="leftNavList-row-head ">
-              <span onclick="expand_tree('000111')" id="plus_000111" class="flex-shrink-0 flex-start ">
-                <span class="leftNavList-row-icon"><i class="bi bi-chevron-right"></i></span>
-              </span>
-              <span class="flex-shrink-1 flex-grow-1 ms-3">Folder 1</span>
-              <span class="tc-1-l">111</span>
-            </div>
-            <div id="child_000111" class="visually-hidden">
-              <div class="leftNavList-row ">
-                <span class="flex-shrink-0 flex-start"><i class="fa-solid fa-image "></i></span>
-                <span class="flex-shrink-1 flex-grow-1 ms-2">01234567891234533 11</span>
-                <span class="tc-1-l">111</span>
-              </div>
-              <div class="leftNavList-row">
-                <span class="flex-shrink-0 flex-start"><i class="fa-solid fa-image "></i></span>
-                <span class="flex-shrink-1 flex-grow-1 ms-2">01234567891234533</span>
-                <span class="tc-1-l">111</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- folder 2 -->
-          <div>
-            <!-- row -->
-            <div class="leftNavList-row-head">
-              <span onclick="expand_tree('000112')" id="plus_000112" class="flex-shrink-0 flex-start ">
-                <span class="leftNavList-row-icon"><i class="bi bi-chevron-right"></i></span>
-              </span>
-              <span class="flex-shrink-1 flex-grow-1 ms-3">Folder 1</span>
-              <span class="tc-1-l">111</span>
-            </div>
-            <div id="child_000112" class="visually-hidden">
-              <div class="leftNavList-row">
-                <span class="flex-shrink-0 flex-start"><i class="fa-solid fa-image "></i></span>
-                <span class="flex-shrink-1 flex-grow-1 ms-2">01234567891234533 11</span>
-                <span class="tc-1-l">111</span>
-              </div>
-              <div class="leftNavList-row">
-                <span class="flex-shrink-0 flex-start"><i class="fa-solid fa-image "></i></span>
-                <span class="flex-shrink-1 flex-grow-1 ms-2">01234567891234533</span>
-                <span class="tc-1-l">111</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- new folder button -->
-          <div class="leftNavList-row">
-            <span><strong>Create New Folder</strong></span>
-          </div>
-
-          <p>CSS Linear Gradients
-            To create a linear gradient you must define at least two color stops. Color stops are the colors you want to
-            render smooth transitions among. You can also set a starting point and a direction (or an angle) along with
-            the gradient effect.
-
-            Syntax</p>
-          <p>CSS Linear Gradients
-            To create a linear gradient you must define at least two color stops. Color stops are the colors you want to
-            render smooth transitions among. You can also set a starting point and a direction (or an angle) along with
-            the gradient effect.
-
-            Syntax</p>
-          <p>CSS Linear Gradients
-            To create a linear gradient you must define at least two color stops. Color stops are the colors you want to
-            render smooth transitions among. You can also set a starting point and a direction (or an angle) along with
-            the gradient effect.
-
-            Syntax</p>
-          <p>CSS Linear Gradients
-            To create a linear gradient you must define at least two color stops. Color stops are the colors you want to
-            render smooth transitions among. You can also set a starting point and a direction (or an angle) along with
-            the gradient effect.
-
-            Syntax</p>
-          <p>CSS Linear Gradients
-            To create a linear gradient you must define at least two color stops. Color stops are the colors you want to
-            render smooth transitions among. You can also set a starting point and a direction (or an angle) along with
-            the gradient effect.
-
-            Syntax</p>
-          <p>CSS Linear Gradients
-            To create a linear gradient you must define at least two color stops. Color stops are the colors you want to
-            render smooth transitions among. You can also set a starting point and a direction (or an angle) along with
-            the gradient effect.
-
-            Syntax</p>
-          <p>CSS Linear Gradients
-            To create a linear gradient you must define at least two color stops. Color stops are the colors you want to
-            render smooth transitions among. You can also set a starting point and a direction (or an angle) along with
-            the gradient effect.
-
-            Syntax</p>
-          <p>CSS Linear Gradients
-            To create a linear gradient you must define at least two color stops. Color stops are the colors you want to
-            render smooth transitions among. You can also set a starting point and a direction (or an angle) along with
-            the gradient effect.
-
-            Syntax</p>
-          <p>CSS Linear Gradients
-            To create a linear gradient you must define at least two color stops. Color stops are the colors you want to
-            render smooth transitions among. You can also set a starting point and a direction (or an angle) along with
-            the gradient effect.
-
-            Syntax</p>
-
-        </div>
+      <div>
+        <!-- bot dock: profile, log out ... -->
+        <a href="#"
+           class="left-nav-dock-link"
+           data-mdb-toggle="tooltip"
+           title="Theme">
+          <span class="left-nav-dock-icon"><i class="bi bi-display"></i></span>
+        </a>
+        <a href="#"
+           class="left-nav-dock-link"
+           data-mdb-toggle="tooltip"
+           title="Logout">
+          <span class="left-nav-dock-icon"><i class="bi bi-box-arrow-right"></i></span>
+        </a>
       </div>
+    </div>
 
-    </div>
-    <div class="content_container content-w-list-show px-auto" id="contentContainer">
-        {% block content %}
-        {% endblock %}
-    </div>
+    <!-- nav list -->
+    {% include 'includes/nav_list.html' %}
+
   </div>
+  <!-- end side navigation -->
+
+  <!-- content container -->
+  <div class="content_container content-w-list-show"
+       id="contentContainer">
+    {% block content %}
+    {% endblock %}
+  </div>
+  <!-- end content container -->
 
 
-  <!-- <div class="float-menu-toggle invisible">
-    <a href="#" class="left-nav-dock-link active" data-bs-toggle="tooltip" title data-bs-original-title="Open Dock">
-      <i class="fa-solid fa-arrow-right-arrow-left"></i>
-    </a>
-  </div> -->
+  {% block model %}{% endblock %}
 
 
 
 
-  <!-- jQuery, Popper and Bootstrap -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.4/umd/popper.min.js"
-    integrity="sha512-+Tn2V/oN9O/kiaJg/1o5bETqyS35pMDJzkhkf8uvCzxmRox69AsWkSpBSMEGEe4EZp07Nunw712J3Xvh5Tti0w=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"
+
+
+  {% block javascript %}
+  <!-- Bootstrap JS -->
+  <!-- <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"
     integrity="sha512-OvBgP9A2JBgiRad/mM36mkzXSXaJE9BEIENnVEmeZdITvwT09xnxLtT4twkCa8m/loMbPHsvPl0T8lRGVBwjlQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+  <!-- Your stuff: Third-party javascript libraries go here -->
 
-
-  <!-- MDB -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
-
-  <!-- masonry layout -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"
-    integrity="sha512-JRlcvSZAXT8+5SQQAvklXGJuxXTouyq8oIMaYERZQasB8SBDHZaUbeASsJWpk0UUrf89DP3/aefPPrlMR1h1yQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- MDBoostrap -->
+  <script type="text/javascript"
+          src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.11.0/mdb.min.js"></script>
 
   <!-- infinity scroll -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-infinitescroll/4.0.1/infinite-scroll.pkgd.min.js"
-    integrity="sha512-R50vU2SAXi65G4oojvP1NIAC+0WsUN2s+AbkXqoX48WN/ysG3sJLiHuB1yBGTggOu8dl/w2qsm8x4Xr8D/6Hug=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+          integrity="sha512-R50vU2SAXi65G4oojvP1NIAC+0WsUN2s+AbkXqoX48WN/ysG3sJLiHuB1yBGTggOu8dl/w2qsm8x4Xr8D/6Hug=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"></script>
+  <!-- masonry layout -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"
+          integrity="sha512-JRlcvSZAXT8+5SQQAvklXGJuxXTouyq8oIMaYERZQasB8SBDHZaUbeASsJWpk0UUrf89DP3/aefPPrlMR1h1yQ=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.4/umd/popper.min.js"
+          integrity="sha512-+Tn2V/oN9O/kiaJg/1o5bETqyS35pMDJzkhkf8uvCzxmRox69AsWkSpBSMEGEe4EZp07Nunw712J3Xvh5Tti0w=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"></script>
+
+  <!-- place project specific Javascript in this file -->
+  {% compress js %}
+  <script defer
+          src="{% static 'js/app.js' %}"></script>
+  {% endcompress %}
+
+  {% endblock javascript %}
 
 
-  <!-- Custom JS -->
-  <!-- <script src="app.js"></script> -->
-  <script src="{% static 'js/app.js' %}"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="{% static 'js/infinite.min.js' %}" type="text/javascript"></script>
+  {% block inline_javascript %}
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {/* Run whatever you want */ });
 
 
 
+
+  </script>
+  {% endblock inline_javascript %}
 
 
 

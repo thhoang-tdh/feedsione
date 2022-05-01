@@ -26,7 +26,7 @@
 }
 
 .cbg-light {
-    background-color: var(--c-light) !important;
+    background: var(--c-light) !important;
 }
 
 .cbg-dark {

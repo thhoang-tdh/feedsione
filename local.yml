@@ -37,22 +37,22 @@ services:
     env_file:
       - ./.envs/.local/.postgres
 
-  docs:
-    image: feedsione_local_docs
-    container_name: feedsione_local_docs
-    platform: linux/x86_64
-    build:
-      context: .
-      dockerfile: ./compose/local/docs/Dockerfile
-    env_file:
-      - ./.envs/.local/.django
-    volumes:
-      - ./docs:/docs:z
-      - ./config:/app/config:z
-      - ./feedsione:/app/feedsione:z
-    ports:
-      - "9000:9000"
-    command: /start-docs
+  # docs:
+  #   image: feedsione_local_docs
+  #   container_name: feedsione_local_docs
+  #   platform: linux/x86_64
+  #   build:
+  #     context: .
+  #     dockerfile: ./compose/local/docs/Dockerfile
+  #   env_file:
+  #     - ./.envs/.local/.django
+  #   volumes:
+  #     - ./docs:/docs:z
+  #     - ./config:/app/config:z
+  #     - ./feedsione:/app/feedsione:z
+  #   ports:
+  #     - "9000:9000"
+  #   command: /start-docs
 
   mailhog:
     image: mailhog/mailhog:v1.0.0
@@ -72,6 +72,7 @@ services:
       - redis
       - postgres
       - mailhog
+      # - django
     ports: []
     command: /start-celeryworker
 
@@ -83,6 +84,7 @@ services:
       - redis
       - postgres
       - mailhog
+      # - django
     ports: []
     command: /start-celerybeat
 

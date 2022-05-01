@@ -6,7 +6,7 @@ app_name = 'search'
 urlpatterns = [
     # path('article/<slug:slug>', ArticleDetailView.as_view(), name='article_detail'),
     # path('dashboard/', ArticleListView.as_view(), name='article_list')
-    path('feeds/')
+    # path('feeds/')
 ]
 
 

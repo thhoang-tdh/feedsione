@@ -6,17 +6,33 @@
 {% block head_title %}{% translate "Signup" %}{% endblock %}
 
 {% block inner %}
-<h1>{% translate "Sign Up" %}</h1>
 
-<p>{% blocktranslate %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktranslate %}</p>
+<div class="col-md-4 offset-md-4 " style="margin-top: 8vh;">
+  <form class="" id="signup_form" method="post" action="{% url 'account_signup' %}">
+    <div class="card card-signup" style="margin-bottom: 20px;">
 
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-  {% csrf_token %}
-  {{ form|crispy }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <button class="btn btn-primary" type="submit">{% translate "Sign Up" %} &raquo;</button>
-</form>
+      <div class="card-header border-0 cbg-white">
+        <p class="text-center fs-3 my-3" style="border-bottom: 3px solid var(--c-secondary); ">{% trans "Sign Up" %}</p>
+      </div>
+
+      <div class="card-body">
+        {% csrf_token %}
+        {{ form | crispy }}
+
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+
+      </div>
+
+      <div class="card-footer d-grid border-0 bg-white">
+        <button type="submit" class="btn mb-3 btn-round  btn-block cbg-secondary " style="border-radius: 20px;">
+          {% trans "Sign Up" %} &raquo;
+        </button>
+      </div>
+
+    </div>
+  </form>
+</div>
 
 {% endblock %}

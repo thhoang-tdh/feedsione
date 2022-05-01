@@ -1,0 +1,77 @@
+<div class="left-nav-list "
+		 id="leftNavList">
+	<div class="mt-5 bg-2-l">
+		{% url 'news:today' as today_url %}
+		<a href="{{ today_url }}"
+			 class="leftNavList-row-head  {% if request.path == today_url %}leftNavList-active{% endif %}"
+			 data-bs-toggle="tooltip"
+			 data-bs-original-title="Today">
+			<span class="flex-shrink-0 flex-start "><i class="bi bi-rss-fill"></i></span>
+			<strong class="flex-shrink-1 flex-grow-1 ms-3 ">Today</strong>
+
+		</a>
+		{% url 'news:readlater' as readlater_url %}
+		<a href="{{ readlater_url }}"
+			 class="leftNavList-row-head {% if request.path == readlater_url %}leftNavList-active{% endif %}"
+			 data-bs-toggle="tooltip"
+			 data-bs-original-title="Read Later">
+			<span class="flex-shrink-0 flex-start"><i class="bi bi-bookmarks"></i></span>
+			<strong class="flex-shrink-1 flex-grow-1 ms-3">Read Later</strong>
+
+		</a>
+		{% url 'news:all_articles' as all_url %}
+		<a href="{{ all_url }}"
+			 class="leftNavList-row-head {% if request.path == all_url %}leftNavList-active{% endif %}"
+			 data-bs-toggle="tooltip"
+			 data-bs-original-title="Read Later">
+			<span class="flex-shrink-0 flex-start"><i class="bi bi-border-all"></i></span>
+			<strong class="flex-shrink-1 flex-grow-1 ms-3">All</strong>
+
+		</a>
+	</div>
+
+	<!-- folders -->
+	<div class="">
+
+		{% for folder in folders %}
+		<!-- folder -->
+		<div class="folder-wrapper">
+			<div class="leftNavList-row-head nl-folder {% if request.path == folder.get_absolute_url %}leftNavList-active{% endif %}">
+				<span onclick="expand_tree('{{ folder.slug }}')"
+							id="plus_{{folder.slug}}"
+							class="flex-shrink-0 flex-start ">
+					<span class="leftNavList-row-icon"><i class="bi bi-chevron-right"></i></span>
+				</span>
+
+				<a href="{{ folder.get_absolute_url }}">
+					<span class="flex-shrink-1 flex-grow-1 ms-3">{{ folder.name }}</span>
+					<!-- <span class="tc-1-l">count???</span> -->
+				</a>
+			</div>
+
+			<div id="child_{{folder.slug}}"
+					 class="visually-hidden">
+				{% for feed in folder.feeds.all %}
+				<div class="leftNavList-row nl-feed {% if request.path == feed.get_absolute_url %}leftNavList-active{% endif %}">
+					<span class="flex-shrink-0 flex-start"><i class="fa-solid fa-image "></i></span>
+					<a href="{{ feed.get_absolute_url }}"
+						 class="flex-shrink-1 flex-grow-1 ms-2">
+						<span>{{ feed.title }}</span>
+					</a>
+					<!-- <span class="tc-1-l">unread count??? </span> -->
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+		{% endfor %}
+
+
+		<!-- new folder button -->
+		<div class="leftNavList-row">
+			<span><strong>Create New Folder</strong></span>
+		</div>
+
+
+
+	</div>
+</div>

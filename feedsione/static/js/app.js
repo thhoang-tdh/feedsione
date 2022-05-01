@@ -1,8 +1,13 @@
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl)
+window.addEventListener("load", function() {
+  console.log("page loaded");
+  const nlfeeds = document.getElementsByClassName('nl-feed');
+  for (let i = 0; i < nlfeeds.length; i++) {
+    if (nlfeeds[i].classList.contains('leftNavList-active')) {
+      expand_tree(nlfeeds[i].parentElement.id.replace('child_', ''));
+      break;
+    }
+  }
 })
-
 
 function expand_tree(id) {
   // alert(id);
@@ -34,3 +39,71 @@ function expand_nav_list() {
   }
 
 }
+
+
+
+function get_article_detail(url) {
+
+  fetch(url, {
+    headers: {
+      "X-Requested-With": "XMLHttpRequest",
+    },
+    credentials: 'same-origin',
+  })
+  .then(response => {
+    if (response.status === 403  && response.headers.get("refresh_url")) {
+      // Perhaps do something fancier than alert()
+      alert("You have to refresh your authentication.")
+      // Redirect the user out of this application.
+      document.location.href = response.headers.get("refresh_url");
+    } else {
+      response.json()
+      .then(stuff => {
+        console.log(stuff);
+      })
+    }
+  });
+}
+
+
+
+
+function toggle_article_detail(id) {
+  var url = '/article/id/' + id;
+
+  console.log(url);
+
+  // fetch(url, {
+  //   headers: {
+  //     "X-Requested-With": "XMLHttpRequest",
+
+  //   }
+  // })
+
+
+
+
+
+
+  // fetch(url, {
+  //   headers: {
+  //     "X-Requested-With": "XMLHttpRequest",
+  //   },
+  //   credentials: 'same-origin',
+  // })
+  // .then(response => {
+  //   if (response.status === 403  && response.headers.get("refresh_url")) {
+  //     // Perhaps do something fancier than alert()
+  //     alert("You have to refresh your authentication.")
+  //     // Redirect the user out of this application.
+  //     document.location.href = response.headers.get("refresh_url");
+  //   } else {
+  //     response.json()
+  //     .then(stuff => {
+  //       console.log(stuff);
+  //     })
+  //   }
+  // });
+}
+
+

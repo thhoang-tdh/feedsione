@@ -8,52 +8,68 @@
 
 {% block inner %}
 
-<h1>{% translate "Sign In" %}</h1>
+<div class="col-md-4 offset-md-4" style="margin-top: 5vh;">
+  <form class="login" method="POST" action="{% url 'account_login' %}">
+    <div class="card mb-5">
 
-{% get_providers as socialaccount_providers %}
+      <div class="card-header border-0 cbg-white">
+        <p class="text-center fs-3 my-3" style="border-bottom: 3px solid var(--c-secondary); ">
+          {% translate "Sign In" %}
+        </p>
+      </div>
 
-{% if socialaccount_providers %}
-  <p>
-    {% translate "Please sign in with one of your existing third party accounts:" %}
-    {% if ACCOUNT_ALLOW_REGISTRATION %}
-      {% blocktranslate trimmed %}
-        Or, <a href="{{ signup_url }}">sign up</a>
-        for a {{ site_name }} account and sign in below:
-      {% endblocktranslate %}
-    {% endif %}
-  </p>
+      <div class="card-body">
+        {% get_providers as socialaccount_providers %}
 
-  <div class="socialaccount_ballot">
+        {% if socialaccount_providers %}
+          <p>
+            {% translate "Please sign in with one of your existing third party accounts:" %}
+            {% if ACCOUNT_ALLOW_REGISTRATION %}
+              {% blocktranslate trimmed %}
+              Or, <a href="{{ signup_url }}">sign up</a>
+              for a {{ site_name }} account and sign in below:
+              {% endblocktranslate %}
+            {% endif %}
+          </p>
 
-    <ul class="socialaccount_providers">
-      {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-    </ul>
+          <div class="socialaccount_ballot">
+            <ul class="socialaccount_providers">
+              {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+            </ul>
 
-    <div class="login-or">{% translate "or" %}</div>
+            <div class="login-or">{% translate "or" %}</div>
 
-  </div>
+          </div>
 
-  {% include "socialaccount/snippets/login_extra.html" %}
+          {% include "socialaccount/snippets/login_extra.html" %}
 
-{% else %}
-  {% if ACCOUNT_ALLOW_REGISTRATION %}
-    <p>
-      {% blocktranslate trimmed %}
-        If you have not created an account yet, then please
-        <a href="{{ signup_url }}">sign up</a> first.
-      {% endblocktranslate %}
-    </p>
-  {% endif %}
-{% endif %}
+          {% else %}
+            {% if ACCOUNT_ALLOW_REGISTRATION %}
+            <p>
+              {% blocktranslate trimmed %}
+              If you have not created an account yet, then please
+              <a href="{{ signup_url }}">sign up</a> first.
+              {% endblocktranslate %}
+            </p>
+          {% endif %}
+        {% endif %}
 
-<form class="login" method="POST" action="{% url 'account_login' %}">
-  {% csrf_token %}
-  {{ form|crispy }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% translate "Forgot Password?" %}</a>
-  <button class="primaryAction btn btn-primary" type="submit">{% translate "Sign In" %}</button>
-</form>
+          {% csrf_token %}
+          {{ form|crispy }}
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+          {% endif %}
+
+
+      </div>
+
+      <div class="card-footer d-grid border-0 bg-white">
+        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+        <button class="primaryAction btn my-3 rounded-pill cbg-secondary" type="submit">{% trans "Sign In" %}</button>
+      </div>
+
+    </div>
+  </form>
+</div>
 
 {% endblock %}

@@ -30,7 +30,7 @@ a, a:hover, a:focus, a:active {
   transition: .5s;
 }
 
-/* img {
-  max-width: 80% !important;
+img {
+  max-width: 60% !important;
   max-height: auto !important;
-} */
+}
