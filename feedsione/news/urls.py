@@ -15,51 +15,45 @@ urlpatterns = [
         name='article_detail'),
 
     path(
-        'all_articles/',
+        'all/',
         views.AllArticlesView.as_view(),
-        name='all_articles'),
+        name='articles_all'),
     path(
         'today/',
         views.TodayArticlesView.as_view(),
-        name='today'),
+        name='articles_today'),
     path(
         'readlater/',
         views.ReadLaterArticlesView.as_view(),
-        name='readlater'),
+        name='articles_readlater'),
     path(
         'feed/<slug:slug>',
         views.FeedArticlesView.as_view(),
-        name='feed_articles'),
-
+        name='articles_feed'),
     path(
         'folder/<slug:slug>',
         views.FolderArticlesView.as_view(),
-        name='folder_articles'),
+        name='articles_folder'),
 
 
     # list feeds
     path(
         'feeds/',
         views.FeedListView.as_view(),
-        name='feeds')
+        name='feeds'),
 
+    # add new
+    path(
+        'folder/create/',
+        views.FolderCreateView.as_view(),
+        name='folder_create'),
+    path(
+        'feed/create/',
+        views.FeedCreateView.as_view(),
+        name='feed_create'),
 
-    # DRAFTING
-    # path('test/id/<uuid>', test_json, name='test_json'),
-    # path('api/articles/', views.test_get_articles_json, )
-    # path('article/id/<uuid>', article_detail_json, name='article_detail_json')
+    # path(
+    #     'feed/<slug:slug>/follow/',
+    #     views.FeedFollowView.views(),
+    #     name='feed_follow'),
 ]
-
-
-# from feedsione.users.views import (
-#     user_detail_view,
-#     user_redirect_view,
-#     user_update_view,
-# )
-
-# app_name = "users"
-# urlpatterns = [
-#     path("~redirect/", view=user_redirect_view, name="redirect"),
-#     path("~update/", view=user_update_view, name="update"),
-#     path("<str:username>/", view=user_detail_view, name="detail"),
-# ]

@@ -15,6 +15,7 @@ urlpatterns = [
     # User management
     path("users/", include("feedsione.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
+
     # Your stuff: custom urls includes go here
     path('', include('feedsione.news.urls', namespace='news')),
     path('search/', include('feedsione.search.urls', namespace='search')),

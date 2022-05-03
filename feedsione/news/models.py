@@ -95,12 +95,13 @@ class Folder(BaseModel):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('news:folder_articles', kwargs={'slug': self.slug})
+        return reverse('news:articles_folder', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         if not self.id:
             self.slug = slugify(shortuuid.ShortUUID().random(length=12) + ' ' + self.name)
         super(Folder, self).save(*args, **kwargs)
+
     class Meta:
         verbose_name = 'Folder'
         verbose_name_plural = 'Folders'
@@ -136,7 +137,7 @@ class Feed(BaseModel):
         through='FeedSubscription',
         related_name='feeds',
         blank=True)
-    folder = models.ManyToManyField(
+    folders = models.ManyToManyField(
         Folder,
         through='FeedSubscription',
         related_name='feeds',
@@ -153,7 +154,7 @@ class Feed(BaseModel):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('news:feed_articles', kwargs={'slug': self.slug})
+        return reverse('news:articles_feed', kwargs={'slug': self.slug})
 
     def clean(self):
         parsed_data = feedparser.parse(self.feed_url)

@@ -1,7 +1,7 @@
 <div class="left-nav-list "
 		 id="leftNavList">
 	<div class="mt-5 bg-2-l">
-		{% url 'news:today' as today_url %}
+		{% url 'news:articles_today' as today_url %}
 		<a href="{{ today_url }}"
 			 class="leftNavList-row-head  {% if request.path == today_url %}leftNavList-active{% endif %}"
 			 data-bs-toggle="tooltip"
@@ -10,7 +10,7 @@
 			<strong class="flex-shrink-1 flex-grow-1 ms-3 ">Today</strong>
 
 		</a>
-		{% url 'news:readlater' as readlater_url %}
+		{% url 'news:articles_readlater' as readlater_url %}
 		<a href="{{ readlater_url }}"
 			 class="leftNavList-row-head {% if request.path == readlater_url %}leftNavList-active{% endif %}"
 			 data-bs-toggle="tooltip"
@@ -19,7 +19,7 @@
 			<strong class="flex-shrink-1 flex-grow-1 ms-3">Read Later</strong>
 
 		</a>
-		{% url 'news:all_articles' as all_url %}
+		{% url 'news:articles_all' as all_url %}
 		<a href="{{ all_url }}"
 			 class="leftNavList-row-head {% if request.path == all_url %}leftNavList-active{% endif %}"
 			 data-bs-toggle="tooltip"
@@ -68,10 +68,10 @@
 
 		<!-- new folder button -->
 		<div class="leftNavList-row">
-			<span><strong>Create New Folder</strong></span>
+			<a href="{% url 'news:folder_create' %}">
+				<span><strong>Create New Folder</strong></span>
+			</a>
 		</div>
-
-
 
 	</div>
 </div>

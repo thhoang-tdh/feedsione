@@ -1,0 +1,138 @@
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg sticky-top cbg-light">
+	<!-- Container wrapper -->
+	<div class="container-fluid">
+		<ul class="navbar-nav">
+			<li class="nav-item">
+				<strong>{{ page_header }}</strong>
+			</li>
+		</ul>
+
+		<!-- Right elements -->
+		<div class="d-flex align-items-center">
+
+			<!-- GO to PREVIOUS ARTICLE -->
+
+			<!-- GO to NEXT ARTICLE -->
+
+
+			<!-- Mark Read -->
+			<div class="dropdown">
+				<a href="#"
+					 class="text-reset me-3 dropdown-toggle hidden-arrow"
+					 id="navbarDropDownMenuMarkRead"
+					 role="button"
+					 data-mdb-toggle="dropdown"
+					 aria-expanded="false">
+					<span class="fs-5"
+								data-mdb-toggle="tooltip"
+								title="Mark as Read">
+						<i class="bi bi-check-lg"></i>
+					</span>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-end"
+						aria-labelledby="navbarDropDownMenuMarkRead">
+					<div class="px-3 pt-3 cc-info">
+						<small>MARK AS READ</small>
+					</div>
+					<li>
+						<a class="dropdown-item"
+							 href="#">All articles</a>
+					</li>
+					<li>
+						<a class="dropdown-item"
+							 href="#">Older than 1 days</a>
+					</li>
+					<li>
+						<a class="dropdown-item"
+							 href="#">Older than 3 days</a>
+					</li>
+					<li>
+						<a class="dropdown-item"
+							 href="#">Older than a week</a>
+					</li>
+					<li>
+						<a class="dropdown-item"
+							 href="#">Older than two weeks</a>
+					</li>
+				</ul>
+
+			</div>
+
+
+			<!-- Change Layout -->
+			<div class="dropdown">
+				<a href="#"
+					 class="text-reset me-3 dropdown-toggle hidden-arrow"
+					 id="navbarDropDownMenuLayout"
+					 role="button"
+					 data-mdb-toggle="dropdown"
+					 aria-expanded="false">
+					<span class="fs-5"
+								data-mdb-toggle="tooltip"
+								title="Change Layout">
+						<i class="bi bi-eye"></i>
+					</span>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-end"
+						aria-labelledby="navbarDropDownMenuLayout">
+					<div class="px-3 pt-3 cc-primary">
+						<small>LAYOUT</small>
+					</div>
+					<li>
+						<a class="dropdown-item"
+							 href="#">Layout 1</a>
+					</li>
+					<li>
+						<a class="dropdown-item"
+							 href="#">Layout 2</a>
+					</li>
+					<li>
+						<a class="dropdown-item"
+							 href="#">Layout 3</a>
+					</li>
+				</ul>
+
+			</div>
+
+			<!-- Sort/Filter -->
+			<div class="dropdown">
+				<a href="#"
+					 class="text-reset me-3 dropdown-toggle hidden-arrow"
+					 id="navbarDropDownMenuFilter"
+					 role="button"
+					 data-mdb-toggle="dropdown"
+					 aria-expanded="false">
+					<span class="fs-5"
+								data-mdb-toggle="tooltip"
+								title="Filter Options">
+						<i class="bi bi-filter"></i>
+					</span>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-end"
+						aria-labelledby="navbarDropDownMenuFilter">
+					<li>
+						<a class="dropdown-item"
+							 href="#">Some news</a>
+					</li>
+					<li>
+						<a class="dropdown-item"
+							 href="#">Another news</a>
+					</li>
+					<li>
+						<a class="dropdown-item"
+							 href="#">Something else here</a>
+					</li>
+				</ul>
+			</div>
+
+			{% include './top_bar_avatar.html' %}
+
+
+		</div>
+		<!-- Right elements -->
+	</div>
+	<!-- Container wrapper -->
+</nav>
+<!-- Navbar -->

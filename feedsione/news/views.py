@@ -1,7 +1,8 @@
 from django.shortcuts import render
 
 from feedsione.news.models import *
-from django.views.generic import ListView, DetailView
+from feedsione.news.forms import *
+from django.views.generic import ListView, DetailView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -10,6 +11,8 @@ from django.shortcuts import get_object_or_404, render
 from datetime import timedelta
 from django.utils import timezone
 from itertools import chain
+from django.http import HttpResponseRedirect
+
 
 
 class ArticleDetailView(DetailView):
@@ -27,6 +30,8 @@ class ArticleListView(LoginRequiredMixin, ListView):
     def get_context_data(self, *arg, **kwargs):
         context = super(ArticleListView, self).get_context_data(*arg, **kwargs)
         context['folders'] = Folder.objects.filter(user=self.request.user)
+        context['page_header'] = 'Articles'
+
         return context
 
 
@@ -39,11 +44,21 @@ class AllArticlesView(ArticleListView):
                                     distinct())
         return articles
 
+    def get_context_data(self, *arg, **kwargs):
+        context = super(AllArticlesView, self).get_context_data(*arg, **kwargs)
+        context['page_header'] = 'All articles'
+        return context
+
 
 class TodayArticlesView(AllArticlesView):
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(date_published__gt=timezone.now()-timedelta(hours=24))
+
+    def get_context_data(self, *arg, **kwargs):
+        context = super(TodayArticlesView, self).get_context_data(*arg, **kwargs)
+        context['page_header'] = 'Today'
+        return context
 
 
 class ReadLaterArticlesView(ArticleListView):
@@ -52,24 +67,44 @@ class ReadLaterArticlesView(ArticleListView):
         return qs.filter(userarticle__user=self.request.user,
                         userarticle__is_read_later=True)
 
+    def get_context_data(self, *arg, **kwargs):
+        context = super(ReadLaterArticlesView, self).get_context_data(*arg, **kwargs)
+        context['page_header'] = 'Read later'
+        return context
+
 
 class FeedArticlesView(ArticleListView):
     def get_queryset(self):
         qs = super().get_queryset()
         slug = self.kwargs['slug']
-        feed = get_object_or_404(Feed, slug=slug)
-        articles = qs.filter(feed=feed)
+        self.feed = get_object_or_404(Feed, slug=slug)
+        articles = qs.filter(feed=self.feed)
         return articles
+
+    def get_context_data(self, *arg, **kwargs):
+        context = super(FeedArticlesView, self).get_context_data(*arg, **kwargs)
+        context['page_header'] = self.feed.title
+        return context
 
 
 class FolderArticlesView(ArticleListView):
     def get_queryset(self):
         qs = super().get_queryset()
-        # folder =???
-        articles = qs.filter
-        return qs.filter(date_published__gt=timezone.now()-timedelta(hours=5))
+        slug = self.kwargs['slug']
+        self.folder = get_object_or_404(Folder, slug=slug)
+        articles = qs.filter(feed__in=Feed.objects.filter(users=self.request.user,
+                                                         folders=self.folder)
+                                                        .distinct())
+        return articles
+
+    def get_context_data(self, *arg, **kwargs):
+        context = super(FolderArticlesView, self).get_context_data(*arg, **kwargs)
+        context['page_header'] = self.folder.name
+        return context
 
 
+
+# TODO:
 class FeedListView(ListView):
     model = Feed
     template_name = 'news/feed_list.html'
@@ -84,6 +119,45 @@ class FeedListView(ListView):
 
 
 
+class FolderCreateView(LoginRequiredMixin, CreateView):
+    # model = Folder
+    template_name = 'news/create_folder.html'
+    form_class = FolderCreateForm
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return HttpResponseRedirect(self.object.get_absolute_url())
+
+    def get_initial(self, *args, **kwargs):
+        initial = super(FolderCreateView, self).get_initial(**kwargs)
+        initial['name'] = 'My folder'
+        return initial
+
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(FolderCreateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs['user'] = self.request.user
+        return kwargs
+
+
+class FeedCreateView(LoginRequiredMixin, CreateView):
+    template_name = 'news/create_feed.html'
+    form_class = FeedCreateForm
+
+    def form_valid(self, form):
+        feed = form.save()
+        return HttpResponseRedirect(feed.get_absolute_url() + 'follow/')
+
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(FeedCreateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs['user'] = self.request.user
+        return kwargs
+
+
+
+# class FeedFollowView(LoginRequiredMixin, CreateView):
+#     template_name = 'news/feed_follow_addfolder.html'
 
 
 
@@ -116,38 +190,3 @@ class FeedListView(ListView):
 
 
 
-
-
-
-
-
-
-
-
-# def test_get_articles_json(request):
-
-#     articles = Article.objects.all()
-#     serializer = ArticleSerializer(articles, many=True)
-#     return JsonResponse({'articles': serializer.data})
-
-
-
-# def article_detail_json(request, uuid):
-#     # article = get_object_or_404(Article, uuid=uuid)
-
-#     # article = serializers.serialize('json', article)
-
-#     # if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-#     #     return JsonResponse(context)
-#     # else:
-#     #     return render(request, 'news/article_detail.html', context)
-
-
-
-#     return JsonResponse({'test': 'test msg', 'name': 'test msg name'}, safe=False)
-
-
-
-
-# def test_json(request, uuid):
-#     return JsonResponse({'test': 'test msg', 'name': 'test msg name'}, safe=False)

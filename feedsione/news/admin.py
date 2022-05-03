@@ -9,7 +9,7 @@ import shortuuid
 admin.site.register(Topic)
 admin.site.register(Source)
 admin.site.register(UserArticle)
-admin.site.register(FeedSubscription)
+
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
@@ -45,3 +45,8 @@ class FeedAdmin(admin.ModelAdmin):
 @admin.register(Folder)
 class FolderAdmin(admin.ModelAdmin):
     list_display = ('name', )
+
+
+@admin.register(FeedSubscription)
+class FeedSubscriptionAdmin(admin.ModelAdmin):
+    list_display = ('user', 'folder', 'feed')
