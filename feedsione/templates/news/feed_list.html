@@ -1,11 +1,8 @@
-
-
 <h1>Feeds</h1>
 
 {% for feed in feeds %}
-    <ul>
-        <li><a href="{{ feed.get_absolute_url }}">{{feed.title}}</a></li>
-    </ul>
+<ul>
+    <li><a href="{{ feed.get_absolute_url }}">{{feed.title}}</a></li>
+</ul>
 {% endfor %}
-
 

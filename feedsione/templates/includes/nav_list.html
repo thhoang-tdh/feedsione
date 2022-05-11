@@ -36,7 +36,8 @@
 		{% for folder in folders %}
 		<!-- folder -->
 		<div class="folder-wrapper">
-			<div class="leftNavList-row-head nl-folder {% if request.path == folder.get_absolute_url %}leftNavList-active{% endif %}">
+			<div
+					 class="leftNavList-row-head nl-folder {% if request.path == folder.get_absolute_url %}leftNavList-active{% endif %}">
 				<span onclick="expand_tree('{{ folder.slug }}')"
 							id="plus_{{folder.slug}}"
 							class="flex-shrink-0 flex-start ">
@@ -52,7 +53,8 @@
 			<div id="child_{{folder.slug}}"
 					 class="visually-hidden">
 				{% for feed in folder.feeds.all %}
-				<div class="leftNavList-row nl-feed {% if request.path == feed.get_absolute_url %}leftNavList-active{% endif %}">
+				<div
+						 class="leftNavList-row nl-feed {% if request.path == feed.get_absolute_url %}leftNavList-active{% endif %}">
 					<span class="flex-shrink-0 flex-start"><i class="fa-solid fa-image "></i></span>
 					<a href="{{ feed.get_absolute_url }}"
 						 class="flex-shrink-1 flex-grow-1 ms-2">
@@ -72,6 +74,45 @@
 				<span><strong>Create New Folder</strong></span>
 			</a>
 		</div>
+		<div class="leftNavList-row">
+			<button class="create-feed-btn btn btn-primary"
+							type="button"
+							name="button"
+							id="create-feed">Create Feed</button>
+		</div>
+
+		<div class="buttons has-addons">
+			<button id="id-follow" class="btn-follow btn-secondary"
+							name="follow"
+							value="follow"
+							data-feed-slug="slugfeed_1"
+							data-folder-slug="slugfolder_1">
+				Follow
+			</button>
+			<button id="id-follow" class="btn-follow btn-secondary"
+							name="follow"
+							value="follow"
+							data-feed-slug="slugfeed_2"
+							data-folder-slug="slugfolder_2">
+				Follow
+			</button>
+			<button id="id-follow" class="btn-follow btn-secondary"
+							name="follow"
+							value="follow"
+							data-feed-slug="slugfeed_3"
+							data-folder-slug="slugfolder_3">
+				Follow
+			</button>
+
+
+
+			<button id="id-unfollow" class="button is-success"
+							name="follow"
+							value="follow">
+				Follow
+			</button>
+		</div>
+
 
 	</div>
 </div>

@@ -2,7 +2,6 @@ from django import forms
 
 from feedsione.news.models import *
 from feedsione.users.models import *
-import feedparser
 
 class FolderCreateForm(forms.ModelForm):
     class Meta:
@@ -22,7 +21,6 @@ class FolderCreateForm(forms.ModelForm):
 
 
 class FeedCreateForm(forms.ModelForm):
-
     class Meta:
         model = Feed
         fields = [
@@ -31,26 +29,31 @@ class FeedCreateForm(forms.ModelForm):
             'frequency',
         ]
 
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')
-        super(FeedCreateForm, self).__init__(*args, **kwargs)
-        self.fields['folders'] = forms.ModelMultipleChoiceField(queryset=Folder.objects.filter(user=self.user),
-                                                                required=True,
-                                                                widget=forms.CheckboxSelectMultiple)
-        self.fields['folders'].error_message = {'required': 'Feed need to be added into at least one folder.'}
-
     def clean_frequency(self):
         frequency = self.cleaned_data['frequency']
         if frequency < 10:
             raise forms.ValidationError('Frequency has to be equal or greater than 10 minutes')
         return frequency
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super(FeedCreateForm, self).__init__(*args, **kwargs)
+        self.fields['folders'] = forms.ModelMultipleChoiceField(queryset=Folder.objects.filter(user=self.user), required=False, widget=forms.CheckboxSelectMultiple)
+        # self.fields['folders'].error_message = {'required': 'Feed need to be added into at least one folder.'}
+
     def save(self, commit=True):
         feed = super(FeedCreateForm, self).save()
         folders = self.cleaned_data.get('folders')
-        user = self.user
 
         for folder in folders:
-            FeedSubscription.objects.create(user=user, feed=feed, folder=folder)
+            FeedSubscription.objects.create(feed=feed, folder=folder)
 
         return feed
+
+
+# class FollowFeedForm(forms.ModelForm):
+#     class Meta:
+#         model = FeedSubscription
+#         fields = [
+#             ''
+#         ]

@@ -23,17 +23,25 @@ urlpatterns = [
         views.TodayArticlesView.as_view(),
         name='articles_today'),
     path(
-        'readlater/',
+        'read_later/',
         views.ReadLaterArticlesView.as_view(),
         name='articles_readlater'),
+    # path(
+    #     'feed/articles/<slug:slug>/',
+    #     views.FeedArticlesView.as_view(),
+    #     name='feed_articles'),
+    # path(
+    #     'folder/articles/<slug:slug>/',
+    #     views.FolderArticlesView.as_view(),
+    #     name='folder_articles'),
     path(
-        'feed/<slug:slug>',
+        'feed/<slug:slug>/articles/',
         views.FeedArticlesView.as_view(),
-        name='articles_feed'),
+        name='feed_articles'),
     path(
-        'folder/<slug:slug>',
+        'folder/<slug:slug>/articles/',
         views.FolderArticlesView.as_view(),
-        name='articles_folder'),
+        name='folder_articles'),
 
 
     # list feeds
@@ -47,13 +55,18 @@ urlpatterns = [
         'folder/create/',
         views.FolderCreateView.as_view(),
         name='folder_create'),
+
     path(
         'feed/create/',
         views.FeedCreateView.as_view(),
         name='feed_create'),
 
-    # path(
-    #     'feed/<slug:slug>/follow/',
-    #     views.FeedFollowView.views(),
-    #     name='feed_follow'),
+    path(
+        'feed/follow/',
+        views.follow_feed,
+        name='follow_feed'),
+    path(
+        '/feed/unfollow/',
+        views.unfollow_feed,
+        name='unfollow_feed'),
 ]

@@ -12,8 +12,15 @@ urlpatterns = [
     #     'articles',
     #     views.aa),  # power search, search icon, search all articles
 
-    # path(
-    #     'feeds/'),
+    path(
+        'feeds/',
+        views.SearchFeedResultsView.as_view(),
+        name='search_feed'),
+    path(
+        'articles/subscription/',
+        views.SearchArticleResultsView.as_view(),
+        name='search_article'),
+
 ]
 
 

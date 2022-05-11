@@ -74,7 +74,7 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "django_celery_beat",
-    "rest_framework",
+
 ]
 
 LOCAL_APPS = [
@@ -189,6 +189,7 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "feedsione.users.context_processors.allauth_settings",
+                "feedsione.news.context_processors.side_menu",
             ],
         },
     }

@@ -106,4 +106,54 @@ function toggle_article_detail(id) {
   // });
 }
 
+/**
+ *     FOLLOW REQUEST
+ */
 
+//  fetch("https://jsonplaceholder.typicode.com/posts", {
+//   method: 'post',
+//   body: post,
+//   headers: {
+//       'Accept': 'application/json',
+//       'Content-Type': 'application/json'
+//   }
+// }).then((response) => {
+//   return response.json()
+// }).then((res) => {
+//   if (res.status === 201) {
+//       console.log("Post successfully created!")
+//   }
+// }).catch((error) => {
+//   console.log(error)
+// })
+
+
+// async function saveMateriaPrima(event) {
+//   console.log('Guardando producto');
+
+//   event.preventDefault();
+//   let dataForm = new FormData(formMatPrima)
+//   let url = formMatPrima.action
+
+//   fetch(url, {
+//     method: 'POST',
+//     body: dataForm
+//   })
+//   .then(function(response){
+//     console.log(response);
+
+//     if(response.ok){
+//       let producto = document.getElementById('id_nombre').value
+//       console.log(`${producto} guardado correctamente.`);
+
+//       document.getElementById('id_nombre').value = ''
+//       $('#modal-crearmateriaprima').modal('hide')
+
+//     }else{
+//       throw "Error en la llamada Fetch"
+//     }
+//   })
+//   .catch(function(err){
+//     console.log(err);
+//   })
+// }

@@ -49,4 +49,4 @@ class FolderAdmin(admin.ModelAdmin):
 
 @admin.register(FeedSubscription)
 class FeedSubscriptionAdmin(admin.ModelAdmin):
-    list_display = ('user', 'folder', 'feed')
+    list_display = ('folder', 'feed', )

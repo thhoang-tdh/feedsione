@@ -15,6 +15,7 @@ import requests
 from shortuuid.django_fields import ShortUUIDField
 import shortuuid
 from django.conf import settings
+from feedsione.news.utils import unique_slug_generator
 
 def one_week_hence():
     return timezone.now() + timezone.timedelta(days=7)
@@ -89,17 +90,21 @@ class Folder(BaseModel):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
 
-    slug = models.SlugField(max_length=150, blank=True)
+    slug = models.SlugField(max_length=255,
+                            unique=True,
+                            blank=True,
+                            editable=False)
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('news:articles_folder', kwargs={'slug': self.slug})
+        return reverse('news:folder_articles', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         if not self.id:
-            self.slug = slugify(shortuuid.ShortUUID().random(length=12) + ' ' + self.name)
+            self.slug = unique_slug_generator(self, self.name)
+            # self.slug = slugify(shortuuid.ShortUUID().random(length=12) + ' ' + self.name)
         super(Folder, self).save(*args, **kwargs)
 
     class Meta:
@@ -132,18 +137,21 @@ class Feed(BaseModel):
         blank=True, null=True,
         on_delete=models.CASCADE)
     topics = models.ManyToManyField(Topic, blank=True)
-    users = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        through='FeedSubscription',
-        related_name='feeds',
-        blank=True)
+    # users = models.ManyToManyField(
+    #     settings.AUTH_USER_MODEL,
+    #     through='FeedSubscription',
+    #     related_name='feeds',
+    #     blank=True)
     folders = models.ManyToManyField(
         Folder,
         through='FeedSubscription',
         related_name='feeds',
         blank=True)
 
-    slug = models.SlugField(max_length=150, blank=True)
+    slug = models.SlugField(max_length=255,
+                            unique=True,
+                            blank=True,
+                            editable=False)
 
     class Meta:
         verbose_name = _('Feed')
@@ -154,7 +162,7 @@ class Feed(BaseModel):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('news:articles_feed', kwargs={'slug': self.slug})
+        return reverse('news:feed_articles', kwargs={'slug': self.slug})
 
     def clean(self):
         parsed_data = feedparser.parse(self.feed_url)
@@ -188,7 +196,7 @@ class Feed(BaseModel):
                 self.source = source
 
         if not self.id:
-            self.slug = slugify(shortuuid.ShortUUID().random(length=12) + ' ' + self.title)
+            self.slug = unique_slug_generator(self, self.title)
 
         super(Feed, self).save(*args, **kwargs)
 
@@ -232,9 +240,9 @@ class FeedSubscription(BaseModel):
     """
     User - Feed
     """
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE)
+    # user = models.ForeignKey(
+    #     settings.AUTH_USER_MODEL,
+    #     on_delete=models.CASCADE)
     feed = models.ForeignKey(
         Feed,
         on_delete=models.CASCADE)
@@ -243,10 +251,10 @@ class FeedSubscription(BaseModel):
         on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = [['user', 'feed', 'folder']]
+        unique_together = [['feed', 'folder']]
 
     def __str__(self):
-        return self.user.username + ' - ' + self.feed.title
+        return self.folder.name + ' - ' + self.feed.title
 
 
 class Article(BaseModel):
@@ -259,7 +267,6 @@ class Article(BaseModel):
         verbose_name=_('article link'),
         unique=True,
         max_length=2048) # link to original article
-    slug = models.SlugField(unique=True, max_length=255, blank=True)
     date_published = models.DateTimeField(verbose_name=_('date published'))
 
     feed = models.ForeignKey(
@@ -271,6 +278,12 @@ class Article(BaseModel):
         through='UserArticle',
         related_name='articles',
         blank=True)
+
+    slug = models.SlugField(max_length=255,
+                            unique=True,
+                            blank=True,
+                            editable=False)
+
 
     class Meta:
         verbose_name = 'Article'
@@ -286,8 +299,7 @@ class Article(BaseModel):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            new_slug = shortuuid.ShortUUID().random(length=22) + '-' + slugify(self.title)
-            self.slug = new_slug[:255]
+            self.slug = unique_slug_generator(self, self.title)
 
         super(Article, self).save(*args, **kwargs)
 
