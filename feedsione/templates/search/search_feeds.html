@@ -1,0 +1,27 @@
+{% extends '../db_base.html' %}
+{% load static %}
+{% block title %}Search Feeds{% endblock %}
+{% load tz %}
+
+{% block content %}
+
+
+<a href="{% url 'search:search_articles' %}">
+  <span class="px-2 cbg-secondary">SEARCH ARTICLES</span>
+</a>
+
+<h2>Search feeds</h2>
+
+<form action="{% url 'search:search_feeds' %}" method="get">
+  <input name="q" type="text" placeholder="Search...">
+</form>
+
+
+{% for feed in feeds %}
+    <ul>
+        <li><a href="{{ feed.get_absolute_url }}">{{feed.title}}</a></li>
+    </ul>
+{% endfor %}
+
+
+{% endblock %}

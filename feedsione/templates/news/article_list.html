@@ -12,7 +12,8 @@
 <div class=" container"
 		 style="top: 70; align-items: center;"
 		 id="contentMain">
-	<h1>Articles</h1>
+
+	<h2>Articles</h2>
 	<div class="inf-container title-only row "
 			 data-infinite-scroll='{ "path": ".pagination__next", "append": ".item", "history": false }'>
 
@@ -35,11 +36,57 @@
 					<div class="pt-3">
 						{{ article.date_published|timesince }}
 					</div>
-					<div class="pt-3 cc-info">
-						<a href="{{ article.feed.get_absolute_url }}">
-							{{ article.feed.title }}
-						</a>
+
+					<div class="d-flex justify-content-between pt-3">
+						<div class="cc-info ">
+							<a href="{{ article.feed.get_absolute_url }}">
+								{{ article.feed.title }}
+							</a>
+						</div>
+						<div class="flex-shrink-0">
+							<button
+								class="cc-secondary ms-1 fs-5"
+								name="mark-as-read-article"
+								data-mdb-toggle="tooltip"
+								title="{% if article.is_read == True %}Mark as Unread{% else %}Mark as Read{% endif %}"
+								data-article-read-status="{{ article.is_read }}"
+								data-article-slug="{{ article.slug }}">
+									{% if article.is_read == True %}
+										<i class="bi bi-check2-circle"></i>
+									{% else %}
+										<i class="bi bi-circle"></i>
+									{% endif %}
+							</button>
+							<button
+								class="cc-secondary ms-1 fs-5"
+								name="add-read-later"
+								data-mdb-toggle="tooltip"
+								title="{% if article.is_read_later == True %}Remove from Read Later{% else %}Add to Read Later{% endif %}"
+								data-article-read-later-status="{{ article.is_read_later }}"
+								data-article-slug="{{ article.slug }}"
+								>
+									{% if article.is_read_later == True %}
+									<i class="bi bi-bookmark-fill"></i>
+									{% else %}
+									<i class="bi bi-bookmark"></i>
+									{% endif %}
+							</button>
+							<button
+								class="cc-secondary ms-1 fs-5"
+								name="save-article"
+								data-mdb-toggle="tooltip"
+								title="{% if article.is_saved == True %}Unsaved{% else %}Save{% endif %}"
+								data-article-save-status="{{ article.is_saved }}"
+								data-article-slug="{{ article.slug }}">
+									{% if article.is_saved == True %}
+									<i class="bi bi-star-fill"></i>
+									{% else %}
+									<i class="bi bi-star"></i>
+									{% endif %}
+							</button>
+						</div>
 					</div>
+
 				</div>
 			</div>
 

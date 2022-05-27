@@ -1,5 +1,4 @@
 window.addEventListener("load", function() {
-  console.log("page loaded");
   const nlfeeds = document.getElementsByClassName('nl-feed');
   for (let i = 0; i < nlfeeds.length; i++) {
     if (nlfeeds[i].classList.contains('leftNavList-active')) {
@@ -68,92 +67,175 @@ function get_article_detail(url) {
 
 
 
-function toggle_article_detail(id) {
-  var url = '/article/id/' + id;
-
-  console.log(url);
-
-  // fetch(url, {
-  //   headers: {
-  //     "X-Requested-With": "XMLHttpRequest",
-
-  //   }
-  // })
-
-
-
-
-
-
-  // fetch(url, {
-  //   headers: {
-  //     "X-Requested-With": "XMLHttpRequest",
-  //   },
-  //   credentials: 'same-origin',
-  // })
-  // .then(response => {
-  //   if (response.status === 403  && response.headers.get("refresh_url")) {
-  //     // Perhaps do something fancier than alert()
-  //     alert("You have to refresh your authentication.")
-  //     // Redirect the user out of this application.
-  //     document.location.href = response.headers.get("refresh_url");
-  //   } else {
-  //     response.json()
-  //     .then(stuff => {
-  //       console.log(stuff);
-  //     })
-  //   }
-  // });
+/**************************************************
+ *              TOP BAR NAV
+**************************************************/
+function sort_newest_first() {
+  var url = new URL(window.location.href.toString());
+  url.searchParams.set('o', '-date_published');
+  window.location = url;
+  return false;
 }
 
-/**
- *     FOLLOW REQUEST
- */
+function sort_oldest_first() {
+  var url = new URL(window.location.href.toString());
+  url.searchParams.set('o', 'date_published');
+  window.location = url;
+  return false;
+}
 
-//  fetch("https://jsonplaceholder.typicode.com/posts", {
-//   method: 'post',
-//   body: post,
-//   headers: {
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json'
-//   }
-// }).then((response) => {
-//   return response.json()
-// }).then((res) => {
-//   if (res.status === 201) {
-//       console.log("Post successfully created!")
-//   }
-// }).catch((error) => {
-//   console.log(error)
-// })
+function handle_onchange_unread() {
+  var unread_checkbox = document.getElementById('unread_checkbox').checked;
+
+  var url = new URL(window.location.href.toString());
+  if (unread_checkbox === true) {
+    url.searchParams.set('unread', 1);
+  } else {
+    url.searchParams.set('unread', 0);
+  }
+  window.location = url;
+  return false;
+}
 
 
-// async function saveMateriaPrima(event) {
-//   console.log('Guardando producto');
+/**************************************************
+ *              MARK ARTICLES
+**************************************************/
+function MarkReadFormSubmit(n) {
+  // mark a list of articles
+  document.mark_read_form.day.value = n;
+  console.log(document.mark_read_form.day.value);
+}
 
-//   event.preventDefault();
-//   let dataForm = new FormData(formMatPrima)
-//   let url = formMatPrima.action
 
-//   fetch(url, {
-//     method: 'POST',
-//     body: dataForm
-//   })
-//   .then(function(response){
-//     console.log(response);
+// Mark article
+const mark_as_read_btns = document.getElementsByName('mark-as-read-article');
+mark_as_read_btns.forEach(btn => {
+  btn.addEventListener('click', event => {
+    clicked_btn = event.target.parentElement;
 
-//     if(response.ok){
-//       let producto = document.getElementById('id_nombre').value
-//       console.log(`${producto} guardado correctamente.`);
+    if (clicked_btn.getAttribute('data-article-read-status') === 'None' ||
+      clicked_btn.getAttribute('data-article-read-status') === 'False') {
+        is_read = true;
+    }
+    else {
+      is_read = false;
+    }
 
-//       document.getElementById('id_nombre').value = ''
-//       $('#modal-crearmateriaprima').modal('hide')
+    const data = {
+      'article_slug': clicked_btn.getAttribute('data-article-slug'),
+      'is_read': is_read,
+    };
 
-//     }else{
-//       throw "Error en la llamada Fetch"
-//     }
-//   })
-//   .catch(function(err){
-//     console.log(err);
-//   })
-// }
+
+    $.ajax({
+      type: 'POST',
+      url: '/article/mark-as-read/',
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRFToken', CSRF_TOKEN);
+      },
+      data: data,
+      success: function (data) {
+        if (is_read === false) {
+          clicked_btn.innerHTML = '<i class="bi bi-circle"></i>';
+          clicked_btn.setAttribute('data-article-read-status', 'False');
+        } else {
+          clicked_btn.innerHTML = '<i class="bi bi-check2-circle"></i>';
+          clicked_btn.setAttribute('data-article-read-status', 'True');
+        }
+      },
+      error: function (response) {
+        console.log(response);
+      }
+    });
+  })
+});
+
+
+// Add to readlater
+const add_read_later_btns = document.getElementsByName('add-read-later');
+add_read_later_btns.forEach(btn => {
+  btn.addEventListener('click', event => {
+    clicked_btn = event.target.parentElement;
+    if (clicked_btn.getAttribute('data-article-read-later-status') === 'None' ||
+      clicked_btn.getAttribute('data-article-read-later-status') === 'False')
+    {
+      is_read_later = true;
+    }
+    else {
+      is_read_later = false;
+    }
+
+    const data = {
+      'article_slug': clicked_btn.getAttribute('data-article-slug'),
+      'is_read_later': is_read_later
+    };
+
+    $.ajax({
+      type: 'POST',
+      url: '/article/read-later/',
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRFToken', CSRF_TOKEN);
+      },
+      data: data,
+      success: function (data) {
+        console.log(is_read_later);
+        if (is_read_later === false) {
+          clicked_btn.innerHTML = '<i class="bi bi-bookmark"></i>';
+          clicked_btn.setAttribute('data-article-read-later-status', 'False');
+        } else {
+          clicked_btn.innerHTML = '<i class="bi bi-bookmark-fill"></i>';
+          clicked_btn.setAttribute('data-article-read-later-status', 'True');
+        }
+      },
+      error: function (response) {
+        console.log(response);
+      }
+    });
+
+  })
+});
+
+
+// Save article
+const save_article_btns = document.getElementsByName('save-article');
+save_article_btns.forEach(btn => {
+  btn.addEventListener('click', event => {
+    clicked_btn = event.target.parentElement;
+    if (clicked_btn.getAttribute('data-article-save-status') === 'None' ||
+      clicked_btn.getAttribute('data-article-save-status') === 'False')
+    {
+      is_saved = true;
+    }
+    else {
+      is_saved = false;
+    }
+
+    const data = {
+      'article_slug': clicked_btn.getAttribute('data-article-slug'),
+      'is_saved': is_saved
+    };
+
+    $.ajax({
+      type: 'POST',
+      url: '/article/save/',
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRFToken', CSRF_TOKEN);
+      },
+      data: data,
+      success: function (data) {
+        if (is_saved === false) {
+          clicked_btn.innerHTML = '<i class="bi bi-star"></i>';
+          clicked_btn.setAttribute('data-article-save-status', 'False');
+        } else {
+          clicked_btn.innerHTML = '<i class="bi bi-star-fill"></i>';
+          clicked_btn.setAttribute('data-article-save-status', 'True');
+        }
+      },
+      error: function (response) {
+        console.log(response);
+      }
+    });
+
+  })
+});

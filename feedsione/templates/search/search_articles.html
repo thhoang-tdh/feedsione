@@ -1,15 +1,29 @@
+{% extends '../db_base.html' %}
+{% load static %}
+{% block title %}Search Articles{% endblock %}
+{% load tz %}
+
+{% block content %}
+
+
+<a href="{% url 'search:search_feeds' %}">
+  <span class="px-2  cbg-secondary">SEARCH FEEDS</span>
+</a>
 
 
 
-<h1>Search articles</h1>
+<h2>Search articles</h2>
 
-<form action="{% url 'search:search_feed' %}" method="get">
+<form action="{% url 'search:search_articles' %}" method="get">
   <input name="q" type="text" placeholder="Search...">
 </form>
 
 
 {% for article in articles %}
     <ul>
-        <li><a href="{{ article.get_absolute_url }}">{{article.title}}</a></li>
+        <li><a href="{{ article.get_absolute_url }}">{{article.headline|safe}}</a></li>
     </ul>
 {% endfor %}
+
+{% endblock %}
+

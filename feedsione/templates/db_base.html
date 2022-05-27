@@ -92,7 +92,7 @@
         </a>
 
         <!-- toggle -->
-        <a href="#"
+        <a href=""
            onclick="expand_nav_list(); return false;"
            class="left-nav-dock-link"
            data-mdb-toggle="tooltip"
@@ -105,10 +105,10 @@
            title="Add New Feeds">
           <span class="left-nav-dock-icon"><i class="bi bi-plus-lg"></i></span>
         </a>
-        <a href="#"
+        <a href="{% url 'search:search_feeds'  %}"
            class="left-nav-dock-link"
            data-mdb-toggle="tooltip"
-           title="Search">
+           title="Search Feed">
           <span class="left-nav-dock-icon"><i class="bi bi-search"></i></span>
           <i class="fa-solid fa-magnifying-glass left-nav-dock-icon"></i>
         </a>
@@ -116,12 +116,6 @@
       </div>
       <div>
         <!-- bot dock: profile, log out ... -->
-        <a href="#"
-           class="left-nav-dock-link"
-           data-mdb-toggle="tooltip"
-           title="Theme">
-          <span class="left-nav-dock-icon"><i class="bi bi-display"></i></span>
-        </a>
         <a href="#"
            class="left-nav-dock-link"
            data-mdb-toggle="tooltip"
@@ -192,7 +186,7 @@
 
   {% block inline_javascript %}
   <script type="text/javascript">
-    // window.addEventListener('DOMContentLoaded', () => {/* Run whatever you want */ });
+    var CSRF_TOKEN = '{{ csrf_token }}';
 
     $(document).ready(function () {
 

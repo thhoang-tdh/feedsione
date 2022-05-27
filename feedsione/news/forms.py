@@ -39,7 +39,6 @@ class FeedCreateForm(forms.ModelForm):
         self.user = kwargs.pop('user')
         super(FeedCreateForm, self).__init__(*args, **kwargs)
         self.fields['folders'] = forms.ModelMultipleChoiceField(queryset=Folder.objects.filter(user=self.user), required=False, widget=forms.CheckboxSelectMultiple)
-        # self.fields['folders'].error_message = {'required': 'Feed need to be added into at least one folder.'}
 
     def save(self, commit=True):
         feed = super(FeedCreateForm, self).save()
@@ -51,9 +50,33 @@ class FeedCreateForm(forms.ModelForm):
         return feed
 
 
-# class FollowFeedForm(forms.ModelForm):
-#     class Meta:
-#         model = FeedSubscription
-#         fields = [
-#             ''
-#         ]
+class MarkReadForm(forms.Form):
+    day = forms.IntegerField(required=True, min_value=0)
+
+
+class ArticleFilterForm(forms.Form):
+
+    SORTING_CHOICE = (
+        ('-date_published', 'Newest first'),
+        ('date_published', 'Oldest first'),
+    )
+
+    sorting = forms.ChoiceField(choices=SORTING_CHOICE, label='SORTING', widget=forms.Select)
+
+
+class UserArticleForm(forms.Form):
+    article_slug = forms.SlugField(required=True)
+    def clean_article_slug(self):
+        slug = self.cleaned_data.get('article_slug')
+        if not Article.objects.filter(slug=slug).exists():
+            raise forms.ValidationError('Non existent article.')
+        return slug
+
+class MarkAsReadArticleForm(UserArticleForm):
+    is_read = forms.BooleanField(required=False)
+
+class ReadLaterArticleForm(UserArticleForm):
+    is_read_later = forms.BooleanField(required=False)
+
+class SaveArticleForm(UserArticleForm):
+    is_saved = forms.BooleanField(required=False)

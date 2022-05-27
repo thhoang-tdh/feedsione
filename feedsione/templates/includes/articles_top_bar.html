@@ -1,4 +1,3 @@
-
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg sticky-top cbg-light">
 	<!-- Container wrapper -->
@@ -36,62 +35,41 @@
 					<div class="px-3 pt-3 cc-info">
 						<small>MARK AS READ</small>
 					</div>
+					<form action="{{request.path}}"
+							name="mark_read_form"
+							method="post">
+					{% csrf_token %}
 					<li>
-						<a class="dropdown-item"
-							 href="#">All articles</a>
+						<button class="dropdown-item"
+								name="day"
+								type="submit"
+								value="0">All articles</button>
 					</li>
 					<li>
-						<a class="dropdown-item"
-							 href="#">Older than 1 days</a>
+						<button class="dropdown-item"
+								name="day"
+								type="submit"
+								value="1">Older than 1 day</button>
 					</li>
 					<li>
-						<a class="dropdown-item"
-							 href="#">Older than 3 days</a>
+						<button class="dropdown-item"
+								name="day"
+								type="submit"
+								value="3">Older than 3 days</button>
 					</li>
 					<li>
-						<a class="dropdown-item"
-							 href="#">Older than a week</a>
+						<button class="dropdown-item"
+								name="day"
+								type="submit"
+								value="7">Older than 1 week</button>
 					</li>
 					<li>
-						<a class="dropdown-item"
-							 href="#">Older than two weeks</a>
+						<button class="dropdown-item"
+								name="day"
+								type="submit"
+								value="14">Older than 2 weeks</button>
 					</li>
-				</ul>
-
-			</div>
-
-
-			<!-- Change Layout -->
-			<div class="dropdown">
-				<a href="#"
-					 class="text-reset me-3 dropdown-toggle hidden-arrow"
-					 id="navbarDropDownMenuLayout"
-					 role="button"
-					 data-mdb-toggle="dropdown"
-					 aria-expanded="false">
-					<span class="fs-5"
-								data-mdb-toggle="tooltip"
-								title="Change Layout">
-						<i class="bi bi-eye"></i>
-					</span>
-				</a>
-				<ul class="dropdown-menu dropdown-menu-end"
-						aria-labelledby="navbarDropDownMenuLayout">
-					<div class="px-3 pt-3 cc-primary">
-						<small>LAYOUT</small>
-					</div>
-					<li>
-						<a class="dropdown-item"
-							 href="#">Layout 1</a>
-					</li>
-					<li>
-						<a class="dropdown-item"
-							 href="#">Layout 2</a>
-					</li>
-					<li>
-						<a class="dropdown-item"
-							 href="#">Layout 3</a>
-					</li>
+				</form>
 				</ul>
 
 			</div>
@@ -112,17 +90,37 @@
 				</a>
 				<ul class="dropdown-menu dropdown-menu-end"
 						aria-labelledby="navbarDropDownMenuFilter">
+					<div class="px-3 pt-3 cc-info">
+						<small>MARK AS READ</small>
+					</div>
 					<li>
-						<a class="dropdown-item"
-							 href="#">Latest</a>
+						<button class="dropdown-item"
+										onclick="sort_newest_first()">
+							Newest first
+						</button>
 					</li>
 					<li>
-						<a class="dropdown-item"
-							 href="#">Oldest</a>
+						<button class="dropdown-item"
+										onclick="sort_oldest_first()">
+							Oldest first
+						</button>
 					</li>
+
+					<div class="px-3 pt-3 cc-info">
+						<small>FILTER</small>
+					</div>
 					<li>
-						<a class="dropdown-item"
-							 href="#">Show unread only</a>
+						<span class="dropdown-item">
+							<input type="checkbox"
+										 onchange="handle_onchange_unread()"
+										 id="unread_checkbox"
+										 {% ifequal request.GET.unread '0' %}
+										 		unchecked
+										 	{% else %}
+											 	checked
+										 	{% endifequal %}>
+							<span>Unread only</span>
+						</span>
 					</li>
 				</ul>
 			</div>

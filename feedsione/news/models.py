@@ -240,9 +240,6 @@ class FeedSubscription(BaseModel):
     """
     User - Feed
     """
-    # user = models.ForeignKey(
-    #     settings.AUTH_USER_MODEL,
-    #     on_delete=models.CASCADE)
     feed = models.ForeignKey(
         Feed,
         on_delete=models.CASCADE)
@@ -322,6 +319,8 @@ class UserArticle(BaseModel):
     def __str__(self):
         return self.user.username + ' - ' + self.article.title
 
+    class Meta:
+        unique_together = ('user', 'article')
 
 
 
