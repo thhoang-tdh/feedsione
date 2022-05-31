@@ -44,46 +44,78 @@
 							</a>
 						</div>
 						<div class="flex-shrink-0">
-							<button
-								class="cc-secondary ms-1 fs-5"
-								name="mark-as-read-article"
-								data-mdb-toggle="tooltip"
-								title="{% if article.is_read == True %}Mark as Unread{% else %}Mark as Read{% endif %}"
-								data-article-read-status="{{ article.is_read }}"
-								data-article-slug="{{ article.slug }}">
-									{% if article.is_read == True %}
-										<i class="bi bi-check2-circle"></i>
-									{% else %}
+							{% if article.ua_records %}
+								<button
+									class="cc-secondary ms-1 fs-5"
+									name="mark-as-read-article"
+									data-mdb-toggle="tooltip"
+									title="Mark Read/Unread"
+									data-article-read-status="{{ article.ua_records.0.is_read }}"
+									data-article-slug="{{ article.slug }}">
+										{% if article.ua_records.0.is_read == True %}
+											<i class="bi bi-check2-circle"></i>
+										{% else %}
+											<i class="bi bi-circle"></i>
+										{% endif %}
+								</button>
+								<button
+									class="cc-secondary ms-1 fs-5"
+									name="add-read-later"
+									data-mdb-toggle="tooltip"
+									title="Read Later"
+									data-article-read-later-status="{{ article.ua_records.0.is_read_later }}"
+									data-article-slug="{{ article.slug }}"
+									>
+										{% if article.ua_records.0.is_read_later == True %}
+										<i class="bi bi-bookmark-fill"></i>
+										{% else %}
+										<i class="bi bi-bookmark"></i>
+										{% endif %}
+								</button>
+								<button
+									class="cc-secondary ms-1 fs-5"
+									name="save-article"
+									data-mdb-toggle="tooltip"
+									title="Save"
+									data-article-save-status="{{ article.ua_records.0.is_saved }}"
+									data-article-slug="{{ article.slug }}">
+										{% if article.ua_records.0.is_saved == True %}
+										<i class="bi bi-star-fill"></i>
+										{% else %}
+										<i class="bi bi-star"></i>
+										{% endif %}
+								</button>
+							{% else %}
+								<button
+									class="cc-secondary ms-1 fs-5"
+									name="mark-as-read-article"
+									data-mdb-toggle="tooltip"
+									title="Mark Read/UnRead"
+									data-article-read-status="none"
+									data-article-slug="{{ article.slug }}">
 										<i class="bi bi-circle"></i>
-									{% endif %}
-							</button>
-							<button
-								class="cc-secondary ms-1 fs-5"
-								name="add-read-later"
-								data-mdb-toggle="tooltip"
-								title="{% if article.is_read_later == True %}Remove from Read Later{% else %}Add to Read Later{% endif %}"
-								data-article-read-later-status="{{ article.is_read_later }}"
-								data-article-slug="{{ article.slug }}"
-								>
-									{% if article.is_read_later == True %}
-									<i class="bi bi-bookmark-fill"></i>
-									{% else %}
-									<i class="bi bi-bookmark"></i>
-									{% endif %}
-							</button>
-							<button
-								class="cc-secondary ms-1 fs-5"
-								name="save-article"
-								data-mdb-toggle="tooltip"
-								title="{% if article.is_saved == True %}Unsaved{% else %}Save{% endif %}"
-								data-article-save-status="{{ article.is_saved }}"
-								data-article-slug="{{ article.slug }}">
-									{% if article.is_saved == True %}
-									<i class="bi bi-star-fill"></i>
-									{% else %}
-									<i class="bi bi-star"></i>
-									{% endif %}
-							</button>
+								</button>
+								<button
+									class="cc-secondary ms-1 fs-5"
+									name="add-read-later"
+									data-mdb-toggle="tooltip"
+									title="Read Later"
+									data-article-read-later-status="False"
+									data-article-slug="{{ article.slug }}"
+									>
+										<i class="bi bi-bookmark"></i>
+								</button>
+								<button
+									class="cc-secondary ms-1 fs-5"
+									name="save-article"
+									data-mdb-toggle="tooltip"
+									title="Save"
+									data-article-save-status="False"
+									data-article-slug="{{ article.slug }}">
+										<i class="bi bi-star"></i>
+								</button>
+							{% endif %}
+
 						</div>
 					</div>
 

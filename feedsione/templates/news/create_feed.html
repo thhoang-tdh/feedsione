@@ -5,13 +5,30 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-<div>
-  <h1>Add new feed</h1>
-  <form action="." method="POST">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit" >SUBMIT</button>
-  </form>
+<div class="container">
+
+  <div class="row mt-5">
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+        <div class="card-header border-0 cbg-white">
+          <h2>Add new feed</h2>
+        </div>
+        <div class="card-body">
+          <form action="." method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+
+
+            <div class="text-center">
+              <button type="button"  type="submit" class="btn cbg-primary cc-white">SUBMIT</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
 </div>
 
 {% endblock %}

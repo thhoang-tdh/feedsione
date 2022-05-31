@@ -31,11 +31,19 @@ class ArticleListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        return qs.annotate(
-            is_read=F('userarticle__is_read'),
-            is_read_later=F('userarticle__is_read_later'),
-            is_saved=F('userarticle__is_saved')
-        )
+        is_unread = self.request.GET.get('unread')
+
+        qs = qs.prefetch_related(
+            models.Prefetch('userarticle_set',
+                            queryset=UserArticle.objects.filter(user=self.request.user),
+                            to_attr='ua_records')
+            )
+
+        if is_unread is not None:
+            if is_unread == '0': # return all articles (includes read and unread)
+                return qs
+        return qs.exclude(userarticle__user=self.request.user, userarticle__is_read=True)
+
 
     def get_context_data(self, *arg, **kwargs):
         context = super(ArticleListView, self).get_context_data(*arg, **kwargs)
@@ -54,16 +62,6 @@ class ArticleListView(LoginRequiredMixin, ListView):
 
         return self.ordering
 
-    def qs_extra(self, qs):
-        '''
-        Filter out articles that is marked as read/unread from queryset.
-        Return unread articles by default.
-        '''
-        is_unread = self.request.GET.get('unread')
-        if is_unread is not None:
-            if is_unread == '0': # return all articles (includes read and unread)
-                return qs
-        return qs.exclude(is_read=True)
 
     def post(self, *args, **kwargs):
         markread_form = MarkReadForm(self.request.POST or None)
@@ -87,7 +85,7 @@ class AllArticlesView(ArticleListView):
         subscripted_feeds = Feed.objects.filter(folders__user=self.request.user).distinct()
         qs = qs.filter(feed__in=subscripted_feeds)
 
-        return self.qs_extra(qs)
+        return qs
 
     def get_context_data(self, *arg, **kwargs):
         context = super(AllArticlesView, self).get_context_data(*arg, **kwargs)
@@ -100,7 +98,7 @@ class TodayArticlesView(AllArticlesView):
         qs = super().get_queryset()
         qs = qs.filter(date_published__gt=timezone.now()-timedelta(hours=24))
 
-        return self.qs_extra(qs)
+        return qs
 
     def get_context_data(self, *arg, **kwargs):
         context = super(TodayArticlesView, self).get_context_data(*arg, **kwargs)
@@ -113,7 +111,7 @@ class ReadLaterArticlesView(ArticleListView):
         qs = qs.filter(userarticle__user=self.request.user,
                        userarticle__is_read_later=True)
 
-        return self.qs_extra(qs)
+        return qs
 
     def get_context_data(self, *arg, **kwargs):
         context = super(ReadLaterArticlesView, self).get_context_data(*arg, **kwargs)
@@ -128,7 +126,7 @@ class FeedArticlesView(ArticleListView):
         self.feed = get_object_or_404(Feed, slug=slug)
         qs = qs.filter(feed=self.feed)
 
-        return self.qs_extra(qs)
+        return qs
 
     def get_context_data(self, *arg, **kwargs):
         context = super(FeedArticlesView, self).get_context_data(*arg, **kwargs)
@@ -143,7 +141,7 @@ class FolderArticlesView(ArticleListView):
         self.folder = get_object_or_404(Folder, slug=slug, user=self.request.user)
         qs = qs.filter(feed__in=self.folder.feeds.all())
 
-        return self.qs_extra(qs)
+        return qs
 
     def get_context_data(self, *arg, **kwargs):
         context = super(FolderArticlesView, self).get_context_data(*arg, **kwargs)

@@ -45,7 +45,7 @@
 				</span>
 
 				<a href="{{ folder.get_absolute_url }}">
-					<span class="flex-shrink-1 flex-grow-1 ms-3">{{ folder.name }}</span>
+					<span class="flex-shrink-1 flex-grow-1 ms-3">{{ folder.name|truncatechars:30 }}</span>
 					<!-- <span class="tc-1-l">count???</span> -->
 				</a>
 			</div>
@@ -58,7 +58,7 @@
 					<span class="flex-shrink-0 flex-start"><i class="fa-solid fa-image "></i></span>
 					<a href="{{ feed.get_absolute_url }}"
 						 class="flex-shrink-1 flex-grow-1 ms-2">
-						<span>{{ feed.title }}</span>
+						<span>{{ feed.title|truncatechars:25 }}</span>
 					</a>
 					<!-- <span class="tc-1-l">unread count??? </span> -->
 				</div>

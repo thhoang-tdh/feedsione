@@ -112,14 +112,15 @@ function MarkReadFormSubmit(n) {
 const mark_as_read_btns = document.getElementsByName('mark-as-read-article');
 mark_as_read_btns.forEach(btn => {
   btn.addEventListener('click', event => {
-    clicked_btn = event.target.parentElement;
-
-    if (clicked_btn.getAttribute('data-article-read-status') === 'None' ||
-      clicked_btn.getAttribute('data-article-read-status') === 'False') {
-        is_read = true;
+    clicked_btn = event.target;
+    if (clicked_btn.tagName.toLowerCase() === 'i') {
+      clicked_btn = clicked_btn.parentElement;
     }
-    else {
+
+    if (clicked_btn.getAttribute('data-article-read-status') === 'True') {
       is_read = false;
+    } else {
+      is_read = true;
     }
 
     const data = {
@@ -149,6 +150,7 @@ mark_as_read_btns.forEach(btn => {
       }
     });
   })
+  return true;
 });
 
 
@@ -156,14 +158,15 @@ mark_as_read_btns.forEach(btn => {
 const add_read_later_btns = document.getElementsByName('add-read-later');
 add_read_later_btns.forEach(btn => {
   btn.addEventListener('click', event => {
-    clicked_btn = event.target.parentElement;
-    if (clicked_btn.getAttribute('data-article-read-later-status') === 'None' ||
-      clicked_btn.getAttribute('data-article-read-later-status') === 'False')
-    {
-      is_read_later = true;
+    clicked_btn = event.target;
+    if (clicked_btn.tagName.toLowerCase() === 'i') {
+      clicked_btn = clicked_btn.parentElement;
     }
-    else {
+
+    if (clicked_btn.getAttribute('data-article-read-later-status') === 'True') {
       is_read_later = false;
+    } else {
+      is_read_later = true;
     }
 
     const data = {
@@ -179,7 +182,6 @@ add_read_later_btns.forEach(btn => {
       },
       data: data,
       success: function (data) {
-        console.log(is_read_later);
         if (is_read_later === false) {
           clicked_btn.innerHTML = '<i class="bi bi-bookmark"></i>';
           clicked_btn.setAttribute('data-article-read-later-status', 'False');
@@ -201,14 +203,15 @@ add_read_later_btns.forEach(btn => {
 const save_article_btns = document.getElementsByName('save-article');
 save_article_btns.forEach(btn => {
   btn.addEventListener('click', event => {
-    clicked_btn = event.target.parentElement;
-    if (clicked_btn.getAttribute('data-article-save-status') === 'None' ||
-      clicked_btn.getAttribute('data-article-save-status') === 'False')
-    {
-      is_saved = true;
+    clicked_btn = event.target;
+    if (clicked_btn.tagName.toLowerCase() === 'i') {
+      clicked_btn = clicked_btn.parentElement;
     }
-    else {
+
+    if (clicked_btn.getAttribute('data-article-save-status') === 'True') {
       is_saved = false;
+    } else {
+      is_saved = true;
     }
 
     const data = {
