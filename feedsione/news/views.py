@@ -22,6 +22,19 @@ class ArticleDetailView(DetailView):
     model = Article
     template_name = 'news/article_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        try:
+            ua = UserArticle.objects.get(user=self.request.user,
+                                         article=context['article'])
+        except:
+            ua = None
+
+        context['ua'] = ua
+
+        return context
+
 
 class ArticleListView(LoginRequiredMixin, ListView):
     model = Article
@@ -198,19 +211,22 @@ def follow_feed(request):
 
     if is_ajax:
         if request.method == 'POST':
-            user = request.user
             data = request.POST
-            feed = Feed.objects.filter(slug=data['feed_slug']).first()
-            folder = Folder.objects.filter(slug=data['folder_slug']).first()
+            user = request.user
+            feed = get_object_or_404(Feed, slug=data['feed_slug'])
+            folder = Folder.objects.filter(user=user,
+                                           slug=data['folder_slug']).first()
+
             if feed is None or folder is None:
-                return JsonResponse({'msg': 'Invalid request'}, status=400)
+                return JsonResponse({'msg': 'Invalid request 1'}, status=400)
 
-            FeedSubscription.objects.get_or_create(user=user, feed=feed, folder=folder)
-            return JsonResponse({'msg': 'Subscription added!'})
+            obj, created = FeedSubscription.objects.update_or_create(feed=feed,
+                                                                     folder=folder)
+            return JsonResponse({'msg': 'OK!'})
 
-        return JsonResponse({'msg': 'Invalid request'}, status=400)
+        return JsonResponse({'msg': 'Invalid request 3'}, status=400)
     else:
-        return HttpResponseBadRequest('Invalid request')
+        return HttpResponseBadRequest('Invalid request 4')
 
 
 @login_required
@@ -218,21 +234,25 @@ def unfollow_feed(request):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
     if is_ajax:
-        if request.method == 'DELETE':
+        if request.method == 'POST':
+            data = request.POST
             user = request.user
-            data = request.DELETE
-            feed = Feed.objects.filter(slug=data['feed_slug']).first()
-            folder = Folder.objects.filter(slug=data['folder_slug']).first()
+            feed = get_object_or_404(Feed, slug=data['feed_slug'])
+            folder = Folder.objects.filter(user=user,
+                                           slug=data['folder_slug']).first()
 
-            fs = FeedSubscription.objects.filter(user=user, feed=feed, folder=folder).first()
-            if not fs is None:
+            if feed is None or folder is None:
+                return JsonResponse({'msg': 'Invalid request 1'}, status=400)
+
+            fs = FeedSubscription.objects.filter(feed=feed, folder=folder).first()
+            if fs is not None:
                 fs.delete()
 
-            return JsonResponse({'msg': 'Successfully unfollow feed!'})
+            return JsonResponse({'msg': 'OK!'})
 
-        return JsonResponse({'msg': 'Invalid request'}, status=400)
+        return JsonResponse({'msg': 'Invalid request 1'}, status=400)
     else:
-        return HttpResponseBadRequest('Invalid request')
+        return HttpResponseBadRequest('Invalid request 2')
 
 
 @login_required

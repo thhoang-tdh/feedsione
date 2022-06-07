@@ -19,6 +19,16 @@
   --c-success: #00a45a;
   --c-warning: #e4ca00;
   --c-danger: #f50700;
+
+  --primary: #cb0c9f;
+  --secondary: #8392ab;
+  --info: #519caf;
+  --success: #82d616;
+  --danger: #ea0606;
+  --warning: #FBCF33;
+  --light: #e9ecef;
+  --dark: #252f40;
+  --white: #ffffff;
 }
 
 .cbg-white {

@@ -5,23 +5,170 @@
 
 {% block content %}
 
+<div class="container mt-3">
+  <h4 class="border-bottom border-secondary">
+    <strong>Search</strong>
+  </h4>
 
-<a href="{% url 'search:search_articles' %}">
-  <span class="px-2 cbg-secondary">SEARCH ARTICLES</span>
-</a>
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a href=""
+         class="nav-link active">Feeds</a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'search:search_articles' %}"
+         class="nav-link">Articles</a>
+    </li>
+  </ul>
 
-<h2>Search feeds</h2>
+  <div class="mt-3">
+    <form action="{% url 'search:search_feeds' %}"
+          method="get">
 
-<form action="{% url 'search:search_feeds' %}" method="get">
-  <input name="q" type="text" placeholder="Search...">
-</form>
+      <div class="input-group input-group-lg">
+        <span class="input-group-text"
+              id="inputGroup-sizing-lg">
+          <i class="bi bi-search"></i>
+        </span>
+        <input type="text"
+               name="q"
+               class="form-control"
+               aria-label="Search Key"
+               placeholder="Search..."
+               aria-describedby="inputGroup-sizing-lg">
+      </div>
+    </form>
+  </div>
+
+  <div class="result mt-4">
+
+    <h5 class="fw-bold">Feeds</h5>
+    <p><small>Found: 100</small></p>
+    {% for feed in feeds %}
+
+    <div class="card mb-2 col-sm-10 ">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div class="col">
+            <div class="fw-bold">
+              <a href="{{ feed.get_absolute_url }}">{{feed.title}}</a>
+            </div>
+            <div>
+              <span class="opacity-50">
+                <small>
+                  {{ feed.source }}
+                </small>
+              </span>
+            </div>
+
+            <div>
+
+              <div class="btn-group">
+
+                <ul class="dropdown-menu dropdown-menu-end"
+                    aria-labelledby="navbarDropDownMenuMarkRead">
+                  <div class="px-3 pt-3 text-primary">
+                    <small>MARK AS READ</small>
+                  </div>
+                  <form action="{{request.path}}"
+                      name="mark_read_form"
+                      method="post">
+                  {% csrf_token %}
+                  <li>
+                    <a href="" class="dropdown-item">
+                      <button
+                        name="day"
+                        type="submit"
+                        value="0">All articles</button>
+                    </a>
+                  </li>
+
+                </form>
+                </ul>
+
+              </div>
+
+            </div>
 
 
-{% for feed in feeds %}
-    <ul>
-        <li><a href="{{ feed.get_absolute_url }}">{{feed.title}}</a></li>
-    </ul>
-{% endfor %}
+          </div>
+          <div>
+            <div class="btn-group">
+              {% if feed.folders.all %}
+                <button type="button"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        class="btn btn-sm btn-outline-secondary">
+                  <span>EDIT</span>
+                </button>
+              {% else %}
+                <button type="button"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        class="btn btn-sm btn-outline-primary">
+                  <span>FOLLOW</span>
+                </button>
+              {% endif %}
+
+              <ul class="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="navbarDropDownMenuFollow">
+                {% for folder in folders %}
+                <li>
+                  {% if folder in feed.folders.all %}
+                  <a
+                    class="dropdown-item d-flex justify-content-between"
+                    role="button"
+                    name="feed-subscription"
+                    data-slug-feed="{{ feed.slug }}"
+                    data-slug-folder="{{ folder.slug }}"
+                    data-subscription-action="remove"
+                    >
+                    <div>{{ folder }}</div>
+                    <div class="btn-action">
+                      <span class="badge bg-warning opacity-50 ms-5">REMOVE</span>
+                    </div>
+                  </a>
+                  {% else %}
+                  <a
+                    class="dropdown-item d-flex justify-content-between"
+                    role="button"
+                    name="feed-subscription"
+                    data-slug-feed="{{ feed.slug }}"
+                    data-slug-folder="{{ folder.slug }}"
+                    data-subscription-action="add"
+                    >
+                    <div>{{ folder }}</div>
+                    <div class="btn-action">
+                      <span class="badge bg-primary opacity-50 ms-5">ADD</span>
+                    </div>
+                  </a>
+                  {% endif %}
+                </li>
+                {% endfor %}
+
+                <li>
+                  <a href="{% url 'news:folder_create' %}"
+                    class="dropdown-item mt-3 border-top border-light">
+                    <div class="text-primary opacity-75">
+                      <span>Create new folder</span>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+          </div>
+
+      </div>
+    </div>
+
+    {% endfor %}
+  </div>
+
+</div>
 
 
 {% endblock %}

@@ -137,11 +137,6 @@ class Feed(BaseModel):
         blank=True, null=True,
         on_delete=models.CASCADE)
     topics = models.ManyToManyField(Topic, blank=True)
-    # users = models.ManyToManyField(
-    #     settings.AUTH_USER_MODEL,
-    #     through='FeedSubscription',
-    #     related_name='feeds',
-    #     blank=True)
     folders = models.ManyToManyField(
         Folder,
         through='FeedSubscription',
@@ -237,8 +232,10 @@ class Feed(BaseModel):
 
 
 class FeedSubscription(BaseModel):
+# class FeedSubscription(models.Model):
+
     """
-    User - Feed
+    Folder - Feed
     """
     feed = models.ForeignKey(
         Feed,

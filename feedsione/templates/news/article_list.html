@@ -20,14 +20,16 @@
 		{% for article in articles %}
 		<div class="item col-md-6 pb-3">
 			<div class="card height-100">
-				<div class="card-header cbg-white border-0 cc-dark">
+				<div class="card-header cbg-white border-0 text-dark">
 					<div class="fs-5 fw-bold"
 							 style="cursor: pointer; ">
 						<!-- <span>{{article.title|safe}}</span> -->
 						<a href="{{ article.get_absolute_url }}"
-							 onclick="return false;"
-								id="article_{{ article.uuid }}"
-							 onmousedown="toggle_article_detail('{{ article.uuid }}')">{{article.title|safe}}</a>
+								name="article-title"
+								data-article-og-link="{{ article.link }}"
+								>
+								{{article.title|safe}}
+						</a>
 					</div>
 				</div>
 				<div class="card-body">
@@ -38,7 +40,7 @@
 					</div>
 
 					<div class="d-flex justify-content-between pt-3">
-						<div class="cc-info ">
+						<div class="text-info ">
 							<a href="{{ article.feed.get_absolute_url }}">
 								{{ article.feed.title }}
 							</a>
@@ -46,9 +48,9 @@
 						<div class="flex-shrink-0">
 							{% if article.ua_records %}
 								<button
-									class="cc-secondary ms-1 fs-5"
+									class="text-secondary ms-1 fs-5"
 									name="mark-as-read-article"
-									data-mdb-toggle="tooltip"
+									data-bs-toggle="tooltip"
 									title="Mark Read/Unread"
 									data-article-read-status="{{ article.ua_records.0.is_read }}"
 									data-article-slug="{{ article.slug }}">
@@ -59,9 +61,9 @@
 										{% endif %}
 								</button>
 								<button
-									class="cc-secondary ms-1 fs-5"
+									class="text-secondary ms-1 fs-5"
 									name="add-read-later"
-									data-mdb-toggle="tooltip"
+									data-bs-toggle="tooltip"
 									title="Read Later"
 									data-article-read-later-status="{{ article.ua_records.0.is_read_later }}"
 									data-article-slug="{{ article.slug }}"
@@ -73,9 +75,9 @@
 										{% endif %}
 								</button>
 								<button
-									class="cc-secondary ms-1 fs-5"
+									class="text-secondary ms-1 fs-5"
 									name="save-article"
-									data-mdb-toggle="tooltip"
+									data-bs-toggle="tooltip"
 									title="Save"
 									data-article-save-status="{{ article.ua_records.0.is_saved }}"
 									data-article-slug="{{ article.slug }}">
@@ -87,18 +89,18 @@
 								</button>
 							{% else %}
 								<button
-									class="cc-secondary ms-1 fs-5"
+									class="text-secondary ms-1 fs-5"
 									name="mark-as-read-article"
-									data-mdb-toggle="tooltip"
+									data-bs-toggle="tooltip"
 									title="Mark Read/UnRead"
 									data-article-read-status="none"
 									data-article-slug="{{ article.slug }}">
 										<i class="bi bi-circle"></i>
 								</button>
 								<button
-									class="cc-secondary ms-1 fs-5"
+									class="text-secondary ms-1 fs-5"
 									name="add-read-later"
-									data-mdb-toggle="tooltip"
+									data-bs-toggle="tooltip"
 									title="Read Later"
 									data-article-read-later-status="False"
 									data-article-slug="{{ article.slug }}"
@@ -106,9 +108,9 @@
 										<i class="bi bi-bookmark"></i>
 								</button>
 								<button
-									class="cc-secondary ms-1 fs-5"
+									class="text-secondary ms-1 fs-5"
 									name="save-article"
-									data-mdb-toggle="tooltip"
+									data-bs-toggle="tooltip"
 									title="Save"
 									data-article-save-status="False"
 									data-article-slug="{{ article.slug }}">
@@ -131,7 +133,7 @@
 		 href="?page={{ page_obj.next_page_number }}">More</a>
 
 	<div class="d-flex justify-content-center">
-		<div class="spinner-border cc-primary"
+		<div class="spinner-border text-primary"
 				 style="width: 3rem; height: 3rem;"
 				 role="status">
 			<span class="visually-hidden">Loading...</span>

@@ -5,25 +5,58 @@
 
 {% block content %}
 
+<div class="container mt-3 mb-5">
+  <h4 class="border-bottom border-secondary">
+    <strong>Search</strong>
+  </h4>
 
-<a href="{% url 'search:search_feeds' %}">
-  <span class="px-2  cbg-secondary">SEARCH FEEDS</span>
-</a>
+  <ul class="nav nav-pills flex-column flex-sm-row">
+    <li class="nav-item">
+      <a href="{% url 'search:search_feeds' %}"
+         class="nav-link">Feeds</a>
+    </li>
+    <li class="nav-item">
+      <a href=""
+         class="nav-link active">Articles</a>
+    </li>
+  </ul>
 
+  <div class="mt-3">
+    <form action="{% url 'search:search_articles' %}"
+          method="get">
 
+      <div class="input-group input-group-lg">
+        <span class="input-group-text"
+              id="inputGroup-sizing-lg">
+          <i class="bi bi-search"></i>
+        </span>
+        <input type="text"
+               name="q"
+               class="form-control"
+               aria-label="Search Key"
+               placeholder="Search..."
+               aria-describedby="inputGroup-sizing-lg">
+      </div>
+    </form>
+  </div>
 
-<h2>Search articles</h2>
+  <div class="result mt-5">
+    {% for article in articles %}
 
-<form action="{% url 'search:search_articles' %}" method="get">
-  <input name="q" type="text" placeholder="Search...">
-</form>
+    <div class="card mb-2 col-sm-10">
+      <div class="card-body">
+        <h5 class="fw-bold">
+          <a href="{{ article.link }}"
+             target="_blank"
+            >
+            {{article.headline|safe}}</a>
+        </h5>
+        <div>{{ article.truncated_description|safe }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
 
-
-{% for article in articles %}
-    <ul>
-        <li><a href="{{ article.get_absolute_url }}">{{article.headline|safe}}</a></li>
-    </ul>
-{% endfor %}
+</div>
 
 {% endblock %}
-

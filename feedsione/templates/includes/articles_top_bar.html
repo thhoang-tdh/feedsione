@@ -1,7 +1,7 @@
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg sticky-top cbg-light">
+<nav class="navbar navbar-expand-lg sticky-top bg-light">
 	<!-- Container wrapper -->
-	<div class="container-fluid">
+	<div class="container-fluid border-bottom border-dark ">
 		<ul class="navbar-nav">
 			<li class="nav-item">
 				<strong>{{ page_header }}</strong>
@@ -17,22 +17,23 @@
 
 
 			<!-- Mark Read -->
-			<div class="dropdown">
+			<div class="btn-group">
 				<a href="#"
-					 class="text-reset me-3 dropdown-toggle hidden-arrow"
+					 class="text-reset me-4 dropdown-toggle hidden-arrow nav-item"
 					 id="navbarDropDownMenuMarkRead"
 					 role="button"
-					 data-mdb-toggle="dropdown"
+					 data-bs-toggle="dropdown"
 					 aria-expanded="false">
-					<span class="fs-5"
-								data-mdb-toggle="tooltip"
+					<span class="fs-4 nav"
+								data-bs-toggle="tooltip"
 								title="Mark as Read">
 						<i class="bi bi-check-lg"></i>
 					</span>
 				</a>
+
 				<ul class="dropdown-menu dropdown-menu-end"
 						aria-labelledby="navbarDropDownMenuMarkRead">
-					<div class="px-3 pt-3 cc-info">
+					<div class="px-3 pt-3 text-primary">
 						<small>MARK AS READ</small>
 					</div>
 					<form action="{{request.path}}"
@@ -40,34 +41,45 @@
 							method="post">
 					{% csrf_token %}
 					<li>
-						<button class="dropdown-item"
+						<a href="" class="dropdown-item">
+							<button
 								name="day"
 								type="submit"
 								value="0">All articles</button>
+						</a>
 					</li>
 					<li>
-						<button class="dropdown-item"
+						<a href="" class="dropdown-item">
+							<button
 								name="day"
 								type="submit"
 								value="1">Older than 1 day</button>
+						</a>
 					</li>
 					<li>
-						<button class="dropdown-item"
+						<a href="" class="dropdown-item">
+							<button
 								name="day"
 								type="submit"
 								value="3">Older than 3 days</button>
+						</a>
 					</li>
 					<li>
-						<button class="dropdown-item"
+						<a href="" class="dropdown-item">
+							<button
 								name="day"
 								type="submit"
 								value="7">Older than 1 week</button>
+						</a>
 					</li>
 					<li>
-						<button class="dropdown-item"
+						<a href="" class="dropdown-item">
+							<button
 								name="day"
 								type="submit"
-								value="14">Older than 2 weeks</button>
+								value="14">Older than 2 week</button>
+						</a>
+
 					</li>
 				</form>
 				</ul>
@@ -77,36 +89,40 @@
 			<!-- Sort/Filter -->
 			<div class="dropdown">
 				<a href="#"
-					 class="text-reset me-3 dropdown-toggle hidden-arrow"
+					 class="text-reset me-3 dropdown-toggle hidden-arrow nav-item"
 					 id="navbarDropDownMenuFilter"
 					 role="button"
-					 data-mdb-toggle="dropdown"
+					 data-bs-toggle="dropdown"
 					 aria-expanded="false">
-					<span class="fs-5"
-								data-mdb-toggle="tooltip"
+					<span class="fs-3"
+								data-bs-toggle="tooltip"
 								title="Filter Options">
 						<i class="bi bi-filter"></i>
 					</span>
 				</a>
 				<ul class="dropdown-menu dropdown-menu-end"
 						aria-labelledby="navbarDropDownMenuFilter">
-					<div class="px-3 pt-3 cc-info">
+					<div class="px-3 pt-3 text-primary">
 						<small>MARK AS READ</small>
 					</div>
 					<li>
-						<button class="dropdown-item"
+						<span class="dropdown-item">
+							<button
 										onclick="sort_newest_first()">
 							Newest first
-						</button>
+							</button>
+						</span>
 					</li>
 					<li>
-						<button class="dropdown-item"
+						<span class="dropdown-item">
+							<button
 										onclick="sort_oldest_first()">
 							Oldest first
-						</button>
+							</button>
+						</span>
 					</li>
 
-					<div class="px-3 pt-3 cc-info">
+					<div class="px-3 pt-3 text-primary">
 						<small>FILTER</small>
 					</div>
 					<li>

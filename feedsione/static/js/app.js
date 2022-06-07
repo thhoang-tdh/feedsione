@@ -98,6 +98,34 @@ function handle_onchange_unread() {
 }
 
 
+
+
+
+/**
+ *  ARTICLE TITLE
+ * TODO: right click to article origin url
+ */
+// const article_title = document.getElementsByName('article-title');
+// article_title.forEach(a => {
+//   a.addEventListener('mousedown', event => {
+
+//     if (event.button == 0) {
+//       console.log('left')
+//       event.preventDefault();
+
+//       const url = event.target.getAttribute('data-article-url');
+//       console.log(url);
+//       console.log(window.location.href.toString());
+//     }
+
+//     // e.preventDefault();
+//     // const url = new URL(e.target.getAttribute('data-article-url'));
+//     // window.location = url;
+//   })
+//   return false;
+// });
+
+
 /**************************************************
  *              MARK ARTICLES
 **************************************************/
@@ -241,4 +269,79 @@ save_article_btns.forEach(btn => {
     });
 
   })
+});
+
+
+/**************************************************
+ *           FOLLOW/UNFOLLOW
+**************************************************/
+const feed_subscription_btn = document.getElementsByName('feed-subscription');
+feed_subscription_btn.forEach(btn => {
+  btn.addEventListener('click', event => {
+    var clicked_btn = event.target;
+    if (clicked_btn.tagName.toLowerCase() === 'div') {
+      clicked_btn = clicked_btn.parentElement;
+    }
+    if (clicked_btn.tagName.toLowerCase() === 'span') {
+      clicked_btn = clicked_btn.parentElement.parentElement;
+    }
+
+    const data = {
+      'feed_slug': clicked_btn.getAttribute('data-slug-feed'),
+      'folder_slug': clicked_btn.getAttribute('data-slug-folder')
+    }
+
+    let url = '/feed/unfollow/';
+    let action = 'unfollow';
+    if (clicked_btn.getAttribute('data-subscription-action') === 'add') {
+      url = '/feed/follow/';
+      action = 'follow';
+    }
+
+    $.ajax({
+      type: 'POST',
+      url: url,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRFToken', CSRF_TOKEN);
+      },
+      data: data,
+      success: function (res) {
+        if (action === 'unfollow') {
+          clicked_btn.querySelector('.btn-action').innerHTML = '<span class="badge bg-primary opacity-50 ms-5">ADD</span>';
+          clicked_btn.setAttribute('data-subscription-action', 'add');
+        } else {
+          clicked_btn.querySelector('.btn-action').innerHTML = '<span class="badge bg-warning opacity-50 ms-5">REMOVE</span>';
+          clicked_btn.setAttribute('data-subscription-action', 'remove');
+        }
+
+        var ul = clicked_btn.parentElement.parentElement;
+        var children = ul.children;
+        var num_followed = 0;
+        for(var i=0; i<children.length - 1; i++){
+          var child = children[i].children[0];
+          if (child.getAttribute('data-subscription-action') === 'remove') {
+            num_followed += 1;
+          }
+        }
+
+        var toggler = ul.previousElementSibling;
+        if (num_followed === 0) {
+          toggler.classList.remove('btn-outline-secondary');
+          toggler.classList.add('btn-outline-primary');
+          toggler.innerHTML = '<span>FOLLOW</span>';
+        } else {
+          toggler.classList.remove('btn-outline-primary');
+          toggler.classList.add('btn-outline-secondary');
+          toggler.innerHTML = '<span>EDIT</span>';
+        }
+
+      },
+      error: function (res) {
+        console.log(res);
+      }
+
+    });
+
+
+  });
 });

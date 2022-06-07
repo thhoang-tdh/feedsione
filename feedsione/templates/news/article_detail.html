@@ -3,11 +3,114 @@
 {% block title %}Article Detail{% endblock %}
 {% block content %}
 
-<div>
 
-    <h2>{{ article.title | safe }}</h2>
-    <p>{{ article.date_published }}</p>
-    <p>{{ article.description | safe }}</p>
+
+
+
+
+<div class="container mt-3 ">
+    <div class="card ">
+			<div class="card-footer d-flex flex-row flex-wrap border-bottom border-secondary">
+
+
+				{% if ua %}
+				<button class="text-secondary fs-5 p-3"
+								name="mark-as-read-article"
+								data-bs-toggle="tooltip"
+								title="Mark Read/Unread"
+								data-article-read-status="{{ ua.is_read }}"
+								data-article-slug="{{ article.slug }}">
+					{% if ua.is_read == True %}
+					<i class="bi bi-check2-circle"></i>
+					{% else %}
+					<i class="bi bi-circle"></i>
+					{% endif %}
+				</button>
+				<button class="text-secondary fs-5 p-3"
+								name="add-read-later"
+								data-bs-toggle="tooltip"
+								title="Read Later"
+								data-article-read-later-status="{{ ua.is_read_later }}"
+								data-article-slug="{{ article.slug }}">
+					{% if ua.is_read_later == True %}
+					<i class="bi bi-bookmark-fill"></i>
+					{% else %}
+					<i class="bi bi-bookmark"></i>
+					{% endif %}
+				</button>
+				<button class="text-secondary fs-5 p-3"
+								name="save-article"
+								data-bs-toggle="tooltip"
+								title="Save"
+								data-article-save-status="{{ ua.is_saved }}"
+								data-article-slug="{{ article.slug }}">
+					{% if ua.is_saved == True %}
+					<i class="bi bi-star-fill"></i>
+					{% else %}
+					<i class="bi bi-star"></i>
+					{% endif %}
+				</button>
+				{% else %}
+				<button class="text-secondary fs-5 p-3"
+								name="mark-as-read-article"
+								data-bs-toggle="tooltip"
+								title="Mark Read/UnRead"
+								data-article-read-status="none"
+								data-article-slug="{{ article.slug }}">
+					<i class="bi bi-circle"></i>
+				</button>
+				<button class="text-secondary fs-5 p-3"
+								name="add-read-later"
+								data-bs-toggle="tooltip"
+								title="Read Later"
+								data-article-read-later-status="False"
+								data-article-slug="{{ article.slug }}">
+					<i class="bi bi-bookmark"></i>
+				</button>
+				<button class="text-secondary fs-5 p-3"
+								name="save-article"
+								data-bs-toggle="tooltip"
+								title="Save"
+								data-article-save-status="False"
+								data-article-slug="{{ article.slug }}">
+					<i class="bi bi-star"></i>
+				</button>
+				{% endif %}
+
+			</div>
+
+
+			<div class="card-body mb-5 ">
+				<h3 class="card-title fw-bold">
+					<a href="{{article.link}}"
+						target="_blank"
+					>
+						{{ article.title | safe }}
+					</a>
+				</h3>
+				<div>
+					<span>{{ article.date_published }}</span>
+					<span><i class="bi bi-dot"></i></span>
+					<span class="text-primary">
+						<a href="{{ article.feed.get_absolute_url }}">
+							{{ article.feed.title }}
+						</a>
+					</span>
+				</div>
+    		<div>{{ article.description | safe }}</div>
+
+
+				<div class="text-center mt-5">
+					<a href="{{ article.link }}"
+						class="btn btn-block btn-light rounded-pill  w-75 p-auto"
+						target="_blank"
+						>
+						VIEW FULL ARTICLE
+					</a>
+				</div>
+
+			</div>
+    </div>
 </div>
 
 {% endblock %}

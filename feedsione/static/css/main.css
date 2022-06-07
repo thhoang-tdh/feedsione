@@ -15,7 +15,7 @@
 
 body  {
   font-family: var(--body-font);
-  color: var(--c-dark);
+  color: var(--dark);
 }
 
 
@@ -40,3 +40,20 @@ img {
   max-width: 60% !important;
   max-height: auto !important;
 }
+
+
+.dropdown-toggle::after {
+  content: none;
+}
+
+
+
+i:hover {
+  color: var(--primary);
+}
+
+.card-footer button:hover {
+  background-color: var(--white);
+  color: var(--primary);
+}
+
