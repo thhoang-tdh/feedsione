@@ -36,8 +36,7 @@ class ArticleDetailView(DetailView):
         return context
 
 
-# class ArticleListView(LoginRequiredMixin, ListView):
-class ArticleListView(ListView):
+class ArticleListView(LoginRequiredMixin, ListView):
 
     model = Article
     template_name = 'news/article_list.html'
