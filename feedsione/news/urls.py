@@ -26,6 +26,10 @@ urlpatterns = [
         views.ReadLaterArticlesView.as_view(),
         name='articles_readlater'),
     path(
+        'saved_articles/',
+        views.SavedArticlesView.as_view(),
+        name='articles_saved'),
+    path(
         'feed/<slug:slug>/articles/',
         views.FeedArticlesView.as_view(),
         name='feed_articles'),

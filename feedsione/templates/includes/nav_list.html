@@ -17,7 +17,14 @@
 			 data-bs-original-title="Read Later">
 			<span class="flex-shrink-0 flex-start"><i class="bi bi-bookmarks"></i></span>
 			<strong class="flex-shrink-1 flex-grow-1 ms-3">Read Later</strong>
-
+		</a>
+		{% url 'news:articles_saved' as url %}
+		<a href="{{ url }}"
+			 class="leftNavList-row-head {% if request.path == url %}leftNavList-active{% endif %}"
+			 data-bs-toggle="tooltip"
+			 data-bs-original-title="Saved Articles">
+			<span class="flex-shrink-0 flex-start"><i class="bi bi-sd-card"></i></span>
+			<strong class="flex-shrink-1 flex-grow-1 ms-3">Saved Articles</strong>
 		</a>
 		{% url 'news:articles_all' as all_url %}
 		<a href="{{ all_url }}"
@@ -26,8 +33,9 @@
 			 data-bs-original-title="Read Later">
 			<span class="flex-shrink-0 flex-start"><i class="bi bi-border-all"></i></span>
 			<strong class="flex-shrink-1 flex-grow-1 ms-3">All</strong>
-
 		</a>
+
+
 	</div>
 
 	<!-- folders -->

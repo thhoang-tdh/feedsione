@@ -132,6 +132,18 @@ class ReadLaterArticlesView(ArticleListView):
         context['page_header'] = 'Read later'
         return context
 
+class SavedArticlesView(ArticleListView):
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(userarticle__user=self.request.user,
+                       userarticle__is_saved=True)
+        return qs
+
+    def get_context_data(self, *arg, **kwargs):
+        context = super(SavedArticlesView, self).get_context_data(*arg, **kwargs)
+        context['page_header'] = 'Saved'
+        return context
+
 
 class FeedArticlesView(ArticleListView):
     def get_queryset(self):
