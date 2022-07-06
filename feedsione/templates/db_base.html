@@ -53,29 +53,6 @@
 
 <body class="bg-light">
 
-  <div class="modal fade"
-       id="create-modal"
-       tabindex="-1"
-       role="dialog"
-       aria-hidden="true">
-    <div class="modal-dialog mt-5">
-      <div class="modal-content">
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade"
-       tabindex="-1"
-       role="dialog"
-       id="modal">
-    <div class="modal-dialog mt-5"
-         role="document">
-      <div class="modal-content"></div>
-    </div>
-  </div>
-
-
-
 
   <!-- side navigation -->
   <div class="left-nav">
@@ -115,12 +92,21 @@
       </div>
       <div>
         <!-- bot dock: profile, log out ... -->
-        <a href="#"
+        <!-- <a href="#"
            class="left-nav-dock-link"
            data-mdb-toggle="tooltip"
            title="Logout">
           <span class="left-nav-dock-icon"><i class="bi bi-box-arrow-right"></i></span>
-        </a>
+        </a> -->
+
+        <button type="button"
+                class="left-nav-dock-link"
+                data-bs-toggle="modal"
+                data-bs-target="#logoutModal">
+                <span class="left-nav-dock-icon"><i class="bi bi-box-arrow-right"></i></span>
+        </button>
+
+
       </div>
     </div>
 
@@ -138,7 +124,41 @@
   </div>
   <!-- end content container -->
 
+    <!-- Modal: logout -->
+  <div class="modal fade"
+      id="logoutModal"
+      tabindex="-1"
+      >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"
+              id="staticBackdropLabel">{% translate 'Logout' %}</h5>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>{% translate 'Are you sure you want to sign out?' %}</p>
+        </div>
+        <form method="post" action="{% url 'account_logout' %}">
+          {% csrf_token %}
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+          {% endif %}
+          <div class="modal-footer">
+            <button type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">{% translate 'Close' %}</button>
+            <button type="submit"
+                    class="btn btn-primary">{% translate 'Sign Out' %}</button>
+          </div>
+        </form>
 
+      </div>
+    </div>
+  </div>
 
 
 

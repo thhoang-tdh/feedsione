@@ -5,8 +5,23 @@
 {% block head_title %}{% translate "Verify Your E-mail Address" %}{% endblock %}
 
 {% block inner %}
-    <h1>{% translate "Verify Your E-mail Address" %}</h1>
 
-    <p>{% blocktranslate %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes.{% endblocktranslate %}</p>
+<div class="col-md-10 mx-auto">
+	<div class="card">
+		<div class="card-header py-3 text-center">
+			<h4>
+				{% translate "Verify Your E-mail Address" %}
+			</h4>
+		</div>
+		<div class="card-body">
+			<p>
+				{% blocktranslate %}
+				We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes.
+				{% endblocktranslate %}
+			</p>
+		</div>
+	</div>
+</div>
 
 {% endblock %}
+

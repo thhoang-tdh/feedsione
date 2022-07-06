@@ -42,18 +42,114 @@
 
   <div class="result mt-5">
     {% for article in articles %}
-
+    <a href="{{ article.get_absolute_url }}"
+             target="_blank"
+            >
     <div class="card mb-2 col-sm-10">
       <div class="card-body">
-        <h5 class="fw-bold">
-          <a href="{{ article.link }}"
+        <div class="fs-5 fw-bold">
+          <a href="{{ article.get_absolute_url }}"
              target="_blank"
             >
             {{article.headline|safe}}</a>
-        </h5>
-        <div>{{ article.truncated_description|safe }}</div>
+        </div>
+        <div class="opacity-75">
+          <a href="{{ article.feed.get_absolute_url }}">
+            <small>{{ article.feed.title }}</small>
+          </a>
+        </div>
+
+        <div class="mt-3">
+          {{ article.truncated_description|safe }}
+        </div>
+
+        <div class="d-flex justify-content-between mt-3">
+          <div class="">
+            <small>{{ article.date_published|timesince }}</small>
+          </div>
+          <div class="flex-shrink-0">
+            {% if article.ua_records %}
+              <button
+                class="text-secondary ms-1 fs-6"
+                name="mark-as-read-article"
+                data-bs-toggle="tooltip"
+                title="Mark Read/Unread"
+                data-article-read-status="{{ article.ua_records.0.is_read }}"
+                data-article-slug="{{ article.slug }}">
+                  {% if article.ua_records.0.is_read == True %}
+                    <i class="bi bi-check2-circle"></i>
+                  {% else %}
+                    <i class="bi bi-circle"></i>
+                  {% endif %}
+              </button>
+              <button
+                class="text-secondary ms-1 fs-6"
+                name="add-read-later"
+                data-bs-toggle="tooltip"
+                title="Read Later"
+                data-article-read-later-status="{{ article.ua_records.0.is_read_later }}"
+                data-article-slug="{{ article.slug }}"
+                >
+                  {% if article.ua_records.0.is_read_later == True %}
+                  <i class="bi bi-bookmark-fill"></i>
+                  {% else %}
+                  <i class="bi bi-bookmark"></i>
+                  {% endif %}
+              </button>
+              <button
+                class="text-secondary ms-1 fs-6"
+                name="save-article"
+                data-bs-toggle="tooltip"
+                title="Save"
+                data-article-save-status="{{ article.ua_records.0.is_saved }}"
+                data-article-slug="{{ article.slug }}">
+                  {% if article.ua_records.0.is_saved == True %}
+                  <i class="bi bi-star-fill"></i>
+                  {% else %}
+                  <i class="bi bi-star"></i>
+                  {% endif %}
+              </button>
+            {% else %}
+              <button
+                class="text-secondary ms-1 fs-6"
+                name="mark-as-read-article"
+                data-bs-toggle="tooltip"
+                title="Mark Read/UnRead"
+                data-article-read-status="none"
+                data-article-slug="{{ article.slug }}">
+                  <i class="bi bi-circle"></i>
+              </button>
+              <button
+                class="text-secondary ms-1 fs-6"
+                name="add-read-later"
+                data-bs-toggle="tooltip"
+                title="Read Later"
+                data-article-read-later-status="False"
+                data-article-slug="{{ article.slug }}"
+                >
+                  <i class="bi bi-bookmark"></i>
+              </button>
+              <button
+                class="text-secondary ms-1 fs-6"
+                name="save-article"
+                data-bs-toggle="tooltip"
+                title="Save"
+                data-article-save-status="False"
+                data-article-slug="{{ article.slug }}">
+                  <i class="bi bi-star"></i>
+              </button>
+            {% endif %}
+
+          </div>
+        </div>
       </div>
     </div>
+    </a>
+
+    {% empty %}
+      {% if request.GET.q != None %}
+      <div>No results</div>
+      {% endif %}
     {% endfor %}
   </div>
 

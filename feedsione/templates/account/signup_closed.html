@@ -5,7 +5,19 @@
 {% block head_title %}{% translate "Sign Up Closed" %}{% endblock %}
 
 {% block inner %}
-<h1>{% translate "Sign Up Closed" %}</h1>
 
-<p>{% translate "We are sorry, but the sign up is currently closed." %}</p>
+<div class="col-md-10 mx-auto">
+	<div class="card">
+		<div class="card-header pg-info py-3 text-center">
+			<h4>{% translate "Sign Up Closed" %}</h4>
+    </div>
+		<div class="card-body">
+			<p>{% translate "We are sorry, but the sign up is currently closed." %}</p>
+		</div>
+	</div>
+</div>
+
 {% endblock %}
+
+
+

@@ -1,149 +1,235 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg sticky-top bg-light">
 	<!-- Container wrapper -->
-	<div class="container-fluid border-bottom border-dark ">
-		<ul class="navbar-nav">
-			<li class="nav-item">
+
+	<div class="container border-bottom border-dark">
+
+		<div class="row w-100 mb-1 align-items-center">
+
+			<div class="nav-brand col-6 col-sm-8 col-md-8 d-block float-left">
 				<strong>{{ page_header }}</strong>
-			</li>
-		</ul>
+			</div>
 
-		<!-- Right elements -->
-		<div class="d-flex align-items-center">
+			<!-- Right elements -->
+			<div class="col-6 col-sm-4 col-md-4 d-block"
+			style="text-align: right; float: left; ">
 
-			<!-- GO to PREVIOUS ARTICLE -->
+				<div class="d-inline-flex flex-wrap justify-content-end flex-direction-row align-items-center text-wrap">
 
-			<!-- GO to NEXT ARTICLE -->
+				<!-- GO to PREVIOUS ARTICLE -->
+
+				<!-- GO to NEXT ARTICLE -->
 
 
-			<!-- Mark Read -->
-			<div class="btn-group">
-				<a href="#"
-					 class="text-reset me-4 dropdown-toggle hidden-arrow nav-item"
-					 id="navbarDropDownMenuMarkRead"
-					 role="button"
-					 data-bs-toggle="dropdown"
-					 aria-expanded="false">
-					<span class="fs-4 nav"
-								data-bs-toggle="tooltip"
-								title="Mark as Read">
-						<i class="bi bi-check-lg"></i>
-					</span>
-				</a>
 
-				<ul class="dropdown-menu dropdown-menu-end"
-						aria-labelledby="navbarDropDownMenuMarkRead">
-					<div class="px-3 pt-3 text-primary">
-						<small>MARK AS READ</small>
+				{% if from_single_feed  %}
+					<div class="btn-group">
+						{% if feed.folders.all %}
+							<button type="button"
+											role="button"
+											data-bs-toggle="dropdown"
+											aria-expanded="false"
+											class="btn btn-sm btn-outline-secondary">
+								<span>EDIT</span>
+							</button>
+						{% else %}
+							<button type="button"
+											role="button"
+											data-bs-toggle="dropdown"
+											aria-expanded="false"
+											class="btn btn-sm btn-outline-primary">
+								<span>FOLLOW</span>
+							</button>
+						{% endif %}
+
+						<ul class="dropdown-menu dropdown-menu-end"
+								aria-labelledby="navbarDropDownMenuFollow">
+							{% for folder in folders %}
+							<li>
+								{% if folder in feed.folders.all %}
+								<a
+									class="dropdown-item d-flex justify-content-between"
+									role="button"
+									name="feed-subscription"
+									data-slug-feed="{{ feed.slug }}"
+									data-slug-folder="{{ folder.slug }}"
+									data-subscription-action="remove"
+									>
+									<div>{{ folder }}</div>
+									<div class="btn-action">
+										<span class="badge bg-warning opacity-50 ms-5">REMOVE</span>
+									</div>
+								</a>
+								{% else %}
+								<a
+									class="dropdown-item d-flex justify-content-between"
+									role="button"
+									name="feed-subscription"
+									data-slug-feed="{{ feed.slug }}"
+									data-slug-folder="{{ folder.slug }}"
+									data-subscription-action="add"
+									>
+									<div>{{ folder }}</div>
+									<div class="btn-action">
+										<span class="badge bg-primary opacity-50 ms-5">ADD</span>
+									</div>
+								</a>
+								{% endif %}
+							</li>
+
+							{% endfor %}
+
+							<li>
+								<a href="{% url 'news:folder_create' %}"
+									class="dropdown-item mt-3 border-top border-light">
+									<div class="text-primary opacity-75">
+										<span>Create new folder</span>
+									</div>
+								</a>
+							</li>
+						</ul>
+
 					</div>
-					<form action="{{request.path}}"
-							name="mark_read_form"
-							method="post">
-					{% csrf_token %}
-					<li>
-						<a href="" class="dropdown-item">
-							<button
-								name="day"
-								type="submit"
-								value="0">All articles</button>
-						</a>
-					</li>
-					<li>
-						<a href="" class="dropdown-item">
-							<button
-								name="day"
-								type="submit"
-								value="1">Older than 1 day</button>
-						</a>
-					</li>
-					<li>
-						<a href="" class="dropdown-item">
-							<button
-								name="day"
-								type="submit"
-								value="3">Older than 3 days</button>
-						</a>
-					</li>
-					<li>
-						<a href="" class="dropdown-item">
-							<button
-								name="day"
-								type="submit"
-								value="7">Older than 1 week</button>
-						</a>
-					</li>
-					<li>
-						<a href="" class="dropdown-item">
-							<button
-								name="day"
-								type="submit"
-								value="14">Older than 2 week</button>
-						</a>
 
-					</li>
-				</form>
-				</ul>
+				{% endif %}
+
+
+				<!-- Mark Read -->
+				<div class="btn-group">
+					<a href="#"
+						 class="text-reset p-3 dropdown-toggle hidden-arrow "
+						 id="navbarDropDownMenuMarkRead"
+						 role="button"
+						 data-bs-toggle="dropdown"
+						 aria-expanded="false">
+						<span>
+							<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+								<path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+							</svg>
+						</span>
+
+					</a>
+
+					<ul class="dropdown-menu dropdown-menu-end"
+							aria-labelledby="navbarDropDownMenuMarkRead">
+						<div class="px-3 pt-3 text-primary">
+							<small>MARK AS READ</small>
+						</div>
+						<form action="{{request.path}}"
+								name="mark_read_form"
+								method="post">
+						{% csrf_token %}
+						<li>
+							<a href="" class="dropdown-item">
+								<button
+									name="day"
+									type="submit"
+									value="0">All articles</button>
+							</a>
+						</li>
+						<li>
+							<a href="" class="dropdown-item">
+								<button
+									name="day"
+									type="submit"
+									value="1">Older than 1 day</button>
+							</a>
+						</li>
+						<li>
+							<a href="" class="dropdown-item">
+								<button
+									name="day"
+									type="submit"
+									value="3">Older than 3 days</button>
+							</a>
+						</li>
+						<li>
+							<a href="" class="dropdown-item">
+								<button
+									name="day"
+									type="submit"
+									value="7">Older than 1 week</button>
+							</a>
+						</li>
+						<li>
+							<a href="" class="dropdown-item">
+								<button
+									name="day"
+									type="submit"
+									value="14">Older than 2 week</button>
+							</a>
+
+						</li>
+					</form>
+					</ul>
+
+				</div>
+
+				<!-- Sort/Filter -->
+				<div class="btn-group">
+					<a href="#"
+						 class="text-reset p-3 dropdown-toggle hidden-arrow "
+						 id="navbarDropDownMenuFilter"
+						 role="button"
+						 data-bs-toggle="dropdown"
+						 aria-expanded="false">
+						<span>
+							<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+								<path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+							</svg>
+						</span>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-end"
+							aria-labelledby="navbarDropDownMenuFilter">
+						<div class="px-3 pt-3 text-primary">
+							<small>MARK AS READ</small>
+						</div>
+						<li>
+							<span class="dropdown-item">
+								<button
+											onclick="sort_newest_first()">
+								Newest first
+								</button>
+							</span>
+						</li>
+						<li>
+							<span class="dropdown-item">
+								<button
+											onclick="sort_oldest_first()">
+								Oldest first
+								</button>
+							</span>
+						</li>
+
+						<div class="px-3 pt-3 text-primary">
+							<small>FILTER</small>
+						</div>
+						<li>
+							<span class="dropdown-item">
+								<input type="checkbox"
+											 onchange="handle_onchange_unread()"
+											 id="unread_checkbox"
+											 	{% ifequal request.GET.unread '0' %}
+													 unchecked
+												{% else %}
+													 checked
+												{% endifequal %}>
+								<span>Unread only</span>
+							</span>
+						</li>
+					</ul>
+				</div>
 
 			</div>
 
-			<!-- Sort/Filter -->
-			<div class="dropdown">
-				<a href="#"
-					 class="text-reset me-3 dropdown-toggle hidden-arrow nav-item"
-					 id="navbarDropDownMenuFilter"
-					 role="button"
-					 data-bs-toggle="dropdown"
-					 aria-expanded="false">
-					<span class="fs-3"
-								data-bs-toggle="tooltip"
-								title="Filter Options">
-						<i class="bi bi-filter"></i>
-					</span>
-				</a>
-				<ul class="dropdown-menu dropdown-menu-end"
-						aria-labelledby="navbarDropDownMenuFilter">
-					<div class="px-3 pt-3 text-primary">
-						<small>MARK AS READ</small>
-					</div>
-					<li>
-						<span class="dropdown-item">
-							<button
-										onclick="sort_newest_first()">
-							Newest first
-							</button>
-						</span>
-					</li>
-					<li>
-						<span class="dropdown-item">
-							<button
-										onclick="sort_oldest_first()">
-							Oldest first
-							</button>
-						</span>
-					</li>
-
-					<div class="px-3 pt-3 text-primary">
-						<small>FILTER</small>
-					</div>
-					<li>
-						<span class="dropdown-item">
-							<input type="checkbox"
-										 onchange="handle_onchange_unread()"
-										 id="unread_checkbox"
-										 {% ifequal request.GET.unread '0' %}
-										 		unchecked
-										 	{% else %}
-											 	checked
-										 	{% endifequal %}>
-							<span>Unread only</span>
-						</span>
-					</li>
-				</ul>
 			</div>
-
+			<!-- Right elements -->
 		</div>
-		<!-- Right elements -->
+
+
 	</div>
+
+
 	<!-- Container wrapper -->
 </nav>
 <!-- Navbar -->

@@ -62,6 +62,7 @@ class ArticleListView(LoginRequiredMixin, ListView):
     def get_context_data(self, *arg, **kwargs):
         context = super(ArticleListView, self).get_context_data(*arg, **kwargs)
         context['page_header'] = 'Articles'
+        context['from_single_feed'] = False
         return context
 
     def get_ordering(self):
@@ -90,7 +91,6 @@ class ArticleListView(LoginRequiredMixin, ListView):
                                                         is_read=True)
             return HttpResponseRedirect(self.request.path_info + '?unread=1')
         return HttpResponseRedirect(self.request.path_info)
-
 
 
 class AllArticlesView(ArticleListView):
@@ -157,6 +157,8 @@ class FeedArticlesView(ArticleListView):
     def get_context_data(self, *arg, **kwargs):
         context = super(FeedArticlesView, self).get_context_data(*arg, **kwargs)
         context['page_header'] = self.feed.title
+        context['from_single_feed'] = True
+        context['feed'] = self.feed
         return context
 
 

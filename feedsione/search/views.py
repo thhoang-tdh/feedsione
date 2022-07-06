@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.contrib.postgres.search import (
     SearchVector, SearchQuery, SearchRank, SearchHeadline
 )
+from feedsione.search.forms import SearchForm
 
 
 class SearchFeedResultsView(ListView):
@@ -15,14 +16,31 @@ class SearchFeedResultsView(ListView):
 
 
     def get_queryset(self):
-        q = self.request.GET.get('q')
+        form = SearchForm(self.request.GET)
+
+        if not form.is_valid():
+            return Feed.objects.none()
+
+        q = form.cleaned_data.get('q')
+        if q.lower() == "all":
+            return Feed.objects.all()
 
         query = SearchQuery(q)
         vector = SearchVector('title', 'feed_url')
         object_list = Feed.objects.annotate(
             rank = SearchRank(vector, query)
         ).filter(rank__gt=0).order_by('-rank')
-        return object_list.prefetch_related('folders')
+
+        if object_list:
+            return object_list.prefetch_related('folders')
+
+        # partial words, ..
+        return  Feed.objects.filter(
+            Q(title__icontains=q) |
+            Q(feed_url__icontains=q) |
+            Q(site_url__icontains=q)
+        )
+
 
     def get_context_data(self, *arg, **kwargs):
         context = super(SearchFeedResultsView, self).get_context_data(*arg, **kwargs)

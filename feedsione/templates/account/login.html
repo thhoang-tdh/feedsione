@@ -8,17 +8,40 @@
 
 {% block inner %}
 
-<div class="col-md-4 offset-md-4" style="margin-top: 5vh;">
-  <form class="login" method="POST" action="{% url 'account_login' %}">
-    <div class="card mb-5">
+<div class="col-xl-4 col-lg-5 col-md-7 mx-auto ps">
+  <div class="card z-index-0 shadow card-rounded" >
 
-      <div class="card-header border-0 cbg-white">
-        <p class="text-center fs-3 my-3" style="border-bottom: 3px solid var(--c-secondary); ">
-          {% translate "Sign In" %}
-        </p>
+    <div class="card-header bg-white border-0 pt-3 fw-bold">
+      <div class="text-center fs-3 ">
+        {% translate "Sign In" %}
       </div>
+    </div>
+    <form class="login " method="POST" action="{% url 'account_login' %}">
+      <div class="card-body ">
 
-      <div class="card-body">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+
+        <div class="mb-4">
+          <a class="button secondaryAction " href="{% url 'account_reset_password' %}">
+            {% trans "Forgot Password?" %}
+          </a>
+        </div>
+
+
+        <div class="text-center d-block">
+          <button class="primaryAction btn btn-primary rounded-pill w-100 mb-2 py-2 opacity-75"
+                  type="submit">
+            <span class="">
+              {% trans "Sign In" %}
+            </span>
+          </button>
+        </div>
+
+          <!-- <div>OR</div> -->
         {% get_providers as socialaccount_providers %}
 
         {% if socialaccount_providers %}
@@ -45,31 +68,26 @@
 
           {% else %}
             {% if ACCOUNT_ALLOW_REGISTRATION %}
-            <p>
+            <div class="mt-4 text-center">
               {% blocktranslate trimmed %}
-              If you have not created an account yet, then please
-              <a href="{{ signup_url }}">sign up</a> first.
+              Don't have account?
+              <a href="{{ signup_url }}">Join now</a>
               {% endblocktranslate %}
-            </p>
+            </div>
           {% endif %}
         {% endif %}
 
-          {% csrf_token %}
-          {{ form|crispy }}
-          {% if redirect_field_value %}
-          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-          {% endif %}
 
 
       </div>
+    </form>
 
-      <div class="card-footer d-grid border-0 bg-white">
-        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-        <button class="primaryAction btn my-3 rounded-pill cbg-secondary" type="submit">{% trans "Sign In" %}</button>
-      </div>
+  </div>
 
-    </div>
-  </form>
 </div>
 
+
 {% endblock %}
+
+
+

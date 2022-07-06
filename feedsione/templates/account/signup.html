@@ -7,32 +7,39 @@
 
 {% block inner %}
 
-<div class="col-md-4 offset-md-4 " style="margin-top: 8vh;">
-  <form class="" id="signup_form" method="post" action="{% url 'account_signup' %}">
-    <div class="card card-signup" style="margin-bottom: 20px;">
-
-      <div class="card-header border-0 cbg-white">
-        <p class="text-center fs-3 my-3" style="border-bottom: 3px solid var(--c-secondary); ">{% trans "Sign Up" %}</p>
+<div class="col-xl-4 col-lg-5 col-md-7 mx-auto ps">
+  <div class="card z-index-0 shadow card-rounded">
+    <div class="card-header bg-white border-0 pt-3 fw-bold">
+      <div class="text-center fs-3">
+        {% translate "Sign Up" %}
       </div>
+    </div>
 
+    <form class=""
+          id="signup_form"
+          method="post"
+          action="{% url 'account_signup' %}">
       <div class="card-body">
         {% csrf_token %}
         {{ form | crispy }}
 
         {% if redirect_field_value %}
-        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        <input type="hidden"
+               name="{{ redirect_field_name }}"
+               value="{{ redirect_field_value }}" />
         {% endif %}
 
-      </div>
+        <div class="text-center d-block">
+          <button type="submit"
+                class="btn btn-primary rounded-pill w-100 mb-2 py-2 opacity-75">
+            <span>{% trans "Sign Up" %} &raquo;</span>
+          </button>
+        </div>
 
-      <div class="card-footer d-grid border-0 bg-white">
-        <button type="submit" class="btn mb-3 btn-round  btn-block cbg-secondary " style="border-radius: 20px;">
-          {% trans "Sign Up" %} &raquo;
-        </button>
       </div>
+    </form>
+  </div>
 
-    </div>
-  </form>
 </div>
 
 {% endblock %}

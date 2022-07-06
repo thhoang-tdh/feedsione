@@ -9,25 +9,6 @@
   --left-nav-list-width: 272px;
   --left-nav-width: 320px;
 
-  --c1: #f1ebe5;
-  --c2: #e7856f;
-  --c3: #ed242a;
-  --c4: #958A8A;
-  --c5: #211F27;
-  --cw: white;
-  --cb: black;
-  --bgc: #D9C9B9;
-
-  --c-white: #ffffff;
-  --c-light: #fff3f3;
-  --c-dark: #0a0304;
-  --c-primary: #6a4128;
-  --c-secondary: #b08f77;
-  --c-info: #519caf;
-  --c-success: #00a45a;
-  --c-warning: #e4ca00;
-  --c-danger: #f50700;
-
   --primary: #cb0c9f;
   --secondary: #8392ab;
   --info: #519caf;
@@ -89,7 +70,7 @@ i:hover {
 body {
   font-family: var(--body-font);
   color: var(--dark);
-  background: var(--c-light);
+  background: var(--light);
   overflow-x: hidden;
 }
 
@@ -119,6 +100,7 @@ body .left-nav .left-nav-dock {
   bottom: 0 !important;
   top: 0 !important;
 }
+
 
 
 .left-nav-dock-logo,
@@ -176,7 +158,7 @@ body .left-nav .left-nav-dock {
   overflow-x: hidden;
   height: 100%;
   color: var(--dark);
-  border-right: 1px solid var(--c-dark);
+  border-right: 1px solid var(--dark);
 }
 
 .leftNavList-row,
@@ -340,75 +322,3 @@ select {
 
 
 
-.cbg-white {
-  background-color: var(--c-white) !important;
-}
-
-.cbg-light {
-  background: var(--c-light) !important;
-}
-
-.cbg-dark {
-  background-color: var(--c-dark) !important;
-}
-
-.cbg-primary {
-  background-color: var(--c-primary) !important;
-}
-
-.cbg-secondary {
-  background-color: var(--c-secondary) !important;
-}
-
-.cbg-info {
-  background-color: var(--c-info) !important;
-}
-
-.cbg-success {
-  background-color: var(--c-success) !important;
-}
-
-.cbg-warning {
-  background-color: var(--c-warning) !important;
-}
-
-.cbg-danger {
-  background-color: var(--c-danger) !important;
-}
-
-
-.cc-white {
-  color: var(--c-white) !important;
-}
-
-.cc-light {
-  color: var(--c-light) !important;
-}
-
-.cc-dark {
-  color: var(--c-dark) !important;
-}
-
-.cc-primary {
-  color: var(--c-primary) !important;
-}
-
-.cc-secondary {
-  color: var(--c-secondary) !important;
-}
-
-.cc-info {
-  color:var(--c-info) !important;
-}
-
-.cc-success {
-  color: var(--c-success) !important;
-}
-
-.cc-warning {
-  color: var(--c-warning) !important;
-}
-
-.cc-danger {
-  color: var(--c-danger) !important;
-}

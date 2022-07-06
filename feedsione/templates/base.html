@@ -14,91 +14,150 @@
 
     {% block css %}
     <!-- Latest compiled and minified Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
     <!-- Your stuff: Third-party CSS libraries go here -->
+    <!-- bootstrap icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
+          integrity="sha512-Oy+sz5W86PK0ZIkawrG0iv7XwWhYecM3exvUtMKNJMekGFJtVAhibhRPTpmyTj8+lJCkmWfnpxKgT2OopquBHA=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&amp;display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          rel="stylesheet" />
 
     <!-- This file stores project-specific CSS -->
-    <link href="{% static 'css/project.css' %}" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bs.css' %}" rel="stylesheet">
+
     {% endblock %}
     <!-- Le javascript
     ================================================== -->
     {# Placed at the top of the document so pages load faster with defer #}
     {% block javascript %}
       <!-- Bootstrap JS -->
-      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js" integrity="sha512-OvBgP9A2JBgiRad/mM36mkzXSXaJE9BEIENnVEmeZdITvwT09xnxLtT4twkCa8m/loMbPHsvPl0T8lRGVBwjlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script defer
+              src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"
+              integrity="sha512-OvBgP9A2JBgiRad/mM36mkzXSXaJE9BEIENnVEmeZdITvwT09xnxLtT4twkCa8m/loMbPHsvPl0T8lRGVBwjlQ=="
+              crossorigin="anonymous"
+              referrerpolicy="no-referrer"></script>
       <!-- Your stuff: Third-party javascript libraries go here -->
 
+
       <!-- place project specific Javascript in this file -->
-      <script defer src="{% static 'js/project.js' %}"></script>
+      <script defer src="{% static 'js/app.js' %}"></script>
 
     {% endblock javascript %}
 
   </head>
 
-  <body>
+  <body style="background-color: #E9ECEF;">
 
-    <div class="mb-1">
-      <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <div class="container-fluid">
-          <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <a class="navbar-brand" href="{% url 'home' %}">FeedsIOne</a>
+    <div id="page-container">
+      <div class="container position-sticky zindex-sticky sticky-top top-0">
+        <div class="row">
+          <div class="col-12">
+            <nav class="navbar navbar-expand navbar-light bg-white shadow position-absolute start-0 end-0 my-3 px-2"
+              style="border-radius: 50px;"
+            >
+              <div class="container-fluid d-flex flex-wrap">
+                <a class="navbar-brand"
+                   href="#">
+                   <img src="{% static 'images/logo.png' %}" height="50" />
+                </a>
+                <div class="navbar-nav ms-auto ">
+                  {% if user.is_authenticated %}
+                  <div class="nav-item">
+                    <a class="btn btn-lg rounded-pill ms-2 "
+                      href="{% url 'account_email' %}">
+                      <span class="mx-2 fw-bold  opacity-75">
+                        Change E-mail
+                      </span>
+                    </a>
+                  </div>
+                  <div class="nav-item">
+                    <a class="btn btn-lg rounded-pill ms-2 "
+                      href="{% url 'account_logout' %}">
+                      <span class="mx-2 fw-bold  opacity-75">
+                        Sign Out
+                      </span>
+                    </a>
+                  </div>
+                  {% else %}
+                  <div class="nav-item">
+                    <a class="btn btn-lg rounded-pill ms-2 "
+                      href="{% url 'account_signup' %}">
+                      <span class="mx-2 fw-bold  opacity-75">
+                        Join
+                      </span>
+                    </a>
+                  </div>
+                  <div class="nav-item">
+                    <a class="btn btn-lg btn-outline-primary rounded-pill ms-2"
+                      href="{% url 'account_login' %}">
+                      <span class="mx-2">
+                        Sign in
+                      </span>
+                    </a>
+                  </div>
+                  {% endif %}
+                </div>
 
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="{% url 'home' %}">Home <span class="visually-hidden">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'about' %}">About</a>
-              </li>
-              {% if request.user.is_authenticated %}
-                <li class="nav-item">
-                  {# URL provided by django-allauth/account/urls.py #}
-                  <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% translate "My Profile" %}</a>
-                </li>
-                <li class="nav-item">
-                  {# URL provided by django-allauth/account/urls.py #}
-                  <a class="nav-link" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
-                </li>
-              {% else %}
-                {% if ACCOUNT_ALLOW_REGISTRATION %}
-              <li class="nav-item">
-                {# URL provided by django-allauth/account/urls.py #}
-                <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
-              </li>
-              {% endif %}
-                <li class="nav-item">
-                  {# URL provided by django-allauth/account/urls.py #}
-                  <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
-                </li>
-              {% endif %}
-            </ul>
+
+              </div>
+            </nav>
           </div>
         </div>
-      </nav>
+      </div>
 
+      <main class="mt-0 " id="content-wrap">
+        <section class="min-vh-75 ">
+          <div class="container">
+            {% if messages %}
+            <div style="margin-top: 150px;">
+                {% for message in messages %}
+                <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              {% endfor %}
+              </div>
+            {% endif %}
+
+
+            <div class="row"  style="margin-top: 25vh;">
+              {% block content %}
+                <p>Use this document as a way to quick start any new project.</p>
+              {% endblock content %}
+            </div>
+
+          </div>
+        </section>
+      </main> <!-- container -->
+
+      <footer id="footer">
+        <div class="text-center p-lg">
+          <span>Feeds</span>
+          <span>©</span>
+          <span>2022</span>
+          <span>-</span>
+          <br>
+          <span>TH</span>
+        </div>
+      </footer>
+
+
+      {% block modal %}{% endblock modal %}
     </div>
 
-    <div class="container">
 
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endfor %}
-      {% endif %}
 
-      {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
-      {% endblock content %}
 
-    </div> <!-- /container -->
-
-    {% block modal %}{% endblock modal %}
 
     {% block inline_javascript %}
     {% comment %}
@@ -106,6 +165,15 @@
     with a "defer" so that you run inline code:
     <script>
       window.addEventListener('DOMContentLoaded', () => {/* Run whatever you want */});
+      /**************************************************
+       *           BOOTSSTRAP MODAL
+      **************************************************/
+      var myModal = document.getElementById('myModal')
+      var myInput = document.getElementById('myInput')
+
+      myModal.addEventListener('shown.bs.modal', function () {
+        myInput.focus()
+      })
     </script>
     {% endcomment %}
     {% endblock inline_javascript %}

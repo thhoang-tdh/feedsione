@@ -31,20 +31,23 @@
 								{{article.title|safe}}
 						</a>
 					</div>
+					<div class="opacity-75">
+						<a href="{{ article.feed.get_absolute_url }}">
+							<small>{{ article.feed.title }}</small>
+						</a>
+					</div>
 				</div>
 				<div class="card-body">
 					<div class="card-text"
-							 style=" overflow: hidden;">{{ article.truncated_description | safe}}</div>
-					<div class="pt-3">
-						{{ article.date_published|timesince }}
+							 style=" overflow: hidden;">{{ article.truncated_description | safe}}
 					</div>
 
-					<div class="d-flex justify-content-between pt-3">
-						<div class="text-info ">
-							<a href="{{ article.feed.get_absolute_url }}">
-								{{ article.feed.title }}
-							</a>
+					<div class="d-flex justify-content-between mt-3">
+
+						<div class="">
+							{{ article.date_published|timesince }}
 						</div>
+
 						<div class="flex-shrink-0">
 							{% if article.ua_records %}
 								<button
