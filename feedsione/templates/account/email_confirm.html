@@ -8,8 +8,8 @@
 
 {% block inner %}
 
-<div class="col-lg-5 col-md-7 ms-auto">
-	<div class="card z-index-0 mt-sm-12 mt-9 mb-4">
+<div class="col-md-8 mx-auto">
+	<div class="card z-index-0 shadow card-rounded">
 		<div class="card-header text-center pt-4">
 			<h4 class="mb-1">
 				{% translate "Confirm E-mail Address" %}
@@ -19,11 +19,15 @@
 			{% if confirmation %}
 				{% user_display confirmation.email_address.user as user_display %}
 
-				<p>{% blocktranslate with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktranslate %}</p>
+				<p>
+					{% blocktranslate with confirmation.email_address.email as email %}
+					Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.
+					{% endblocktranslate %}
+				</p>
 
 				<form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
 					{% csrf_token %}
-					<div>
+					<div class="mt-5">
 						<button class="btn btn-secondary rounded-pill w-100" type="submit">
 							{% translate 'Confirm' %}
 						</button>

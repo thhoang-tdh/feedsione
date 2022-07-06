@@ -8,7 +8,7 @@
 
 {% block inner %}
 
-<div class="col-xl-6 col-lg-8 col-md-10 mx-auto ps">
+<div class="col-md-8 mx-auto">
   <div class="card z-index-0 shadow card-rounded">
     <div class="card-body">
       <div class="fw-bold fs-3">
@@ -59,7 +59,7 @@
       <form method="post" action="{% url 'account_email' %}" class="add_email my-2">
           {% csrf_token %}
           {{ form|crispy }}
-          <div class="text-center">
+          <div class="text-center mt-4">
             <button class="btn btn-secondary px-5 rounded-pill" name="action_add" type="submit">
               {% translate "Add E-mail" %}
             </button>

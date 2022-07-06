@@ -70,11 +70,16 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
+
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-    "django_celery_beat",
+    # social providers
+    "allauth.socialaccount.providers.github",
+    # "allauth.socialaccount.providers.twitter",
+    "allauth.socialaccount.providers.google",
 
+    "django_celery_beat",
 ]
 
 LOCAL_APPS = [
@@ -298,6 +303,12 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # ACCOUNT_EMAIL_VERIFICATION = "none"
 
 
+SOCIALACCOUNT_EMAIL_REQUIRED = True
+SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
+
+
+
+
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_ADAPTER = "feedsione.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
@@ -317,3 +328,4 @@ STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 # REST_FRAMEWORK = {
 #     'DE'
 # }
+

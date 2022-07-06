@@ -1,0 +1,63 @@
+{% extends "socialaccount/base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+<div class="col-xl-6 col-lg-6 col-md-8 mx-auto ps">
+	<div class="card z-index-0 shadow ">
+
+    {% if process == "connect" %}
+    <div class="card-header text-center">
+      <h4>{% blocktrans with provider.name as provider %}Connect {{ provider }}{% endblocktrans %}</h4>
+    </div>
+    <div class="card-body">
+      <p>
+        {% blocktrans with provider.name as provider %}
+        You are about to connect a new third party account from {{ provider }}.
+        {% endblocktrans %}
+      </p>
+
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="mt-5">
+          <button class="btn btn-secondary rounded-pill w-100"
+                  type="submit">
+            {% trans "Continue" %}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    {% else %}
+    <div class="card-header text-center">
+      <h4>
+        {% blocktrans with provider.name as provider %}
+        Sign In Via {{ provider }}
+        {% endblocktrans %}
+      </h4>
+    </div>
+
+    <div class="card-body">
+      <p>{% blocktrans with provider.name as provider %}You are about to sign in using a third party account from {{ provider }}.{% endblocktrans %}</p>
+
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="mt-5">
+          <button class="btn btn-secondary rounded-pill w-100"
+                  type="submit">
+            {% trans "Continue" %}
+          </button>
+        </div>
+      </form>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+
+
+{% endblock %}
+

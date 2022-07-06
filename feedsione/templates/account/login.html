@@ -8,7 +8,7 @@
 
 {% block inner %}
 
-<div class="col-xl-4 col-lg-5 col-md-7 mx-auto ps">
+<div class="col-xl-4 col-lg-5 col-md-7 mx-auto ">
   <div class="card z-index-0 shadow card-rounded" >
 
     <div class="card-header bg-white border-0 pt-3 fw-bold">
@@ -22,18 +22,18 @@
         {% csrf_token %}
         {{ form|crispy }}
         {% if redirect_field_value %}
+
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
 
-        <div class="mb-4">
+        <div class="mb-3">
           <a class="button secondaryAction " href="{% url 'account_reset_password' %}">
             {% trans "Forgot Password?" %}
           </a>
         </div>
 
-
         <div class="text-center d-block">
-          <button class="primaryAction btn btn-primary rounded-pill w-100 mb-2 py-2 opacity-75"
+          <button class="primaryAction btn btn-primary rounded-pill w-100 mb-4 py-2 opacity-75"
                   type="submit">
             <span class="">
               {% trans "Sign In" %}
@@ -41,41 +41,38 @@
           </button>
         </div>
 
-          <!-- <div>OR</div> -->
-        {% get_providers as socialaccount_providers %}
 
-        {% if socialaccount_providers %}
+
+        <!-- Register buttons -->
+        <div class="text-center">
           <p>
-            {% translate "Please sign in with one of your existing third party accounts:" %}
             {% if ACCOUNT_ALLOW_REGISTRATION %}
-              {% blocktranslate trimmed %}
-              Or, <a href="{{ signup_url }}">sign up</a>
-              for a {{ site_name }} account and sign in below:
-              {% endblocktranslate %}
+            {% blocktranslate trimmed %}
+              Not a member? <a href="{{ signup_url }}">Join now</a>
+            {% endblocktranslate %}
             {% endif %}
           </p>
 
-          <div class="socialaccount_ballot">
-            <ul class="socialaccount_providers">
-              {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-            </ul>
+          {% get_providers as socialaccount_providers %}
+          {% if socialaccount_providers %}
+          <p>or sign up with:</p>
 
-            <div class="login-or">{% translate "or" %}</div>
+          <a href="{% provider_login_url 'google' %}"
+             class="btn btn-link btn-floating mx-1">
+            <i class="fab fa-google"></i>
+          </a>
+          <a href="{% provider_login_url 'github' %}"
+             class="btn btn-link btn-floating mx-1">
+            <i class="fab fa-github"></i>
+          </a>
 
-          </div>
-
-          {% include "socialaccount/snippets/login_extra.html" %}
-
-          {% else %}
-            {% if ACCOUNT_ALLOW_REGISTRATION %}
-            <div class="mt-4 text-center">
-              {% blocktranslate trimmed %}
-              Don't have account?
-              <a href="{{ signup_url }}">Join now</a>
-              {% endblocktranslate %}
-            </div>
           {% endif %}
-        {% endif %}
+        </div>
+
+
+          <!-- <div>OR</div> -->
+
+
 
 
 
