@@ -16,7 +16,7 @@ class FolderCreateForm(forms.ModelForm):
     def clean_name(self):
         name = self.cleaned_data['name']
         if Folder.objects.filter(user=self.user, name=name).exists():
-            raise forms.ValidationError("You have aldready created a folder with same name.")
+            raise forms.ValidationError("You already have created a folder with same name.")
         return name
 
 

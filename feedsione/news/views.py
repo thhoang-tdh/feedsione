@@ -197,7 +197,7 @@ class FolderCreateView(LoginRequiredMixin, CreateView):
 
     def get_initial(self, *args, **kwargs):
         initial = super(FolderCreateView, self).get_initial(**kwargs)
-        initial['name'] = 'My folder'
+        # initial['name'] = 'My folder'
         return initial
 
     def get_form_kwargs(self, *args, **kwargs):

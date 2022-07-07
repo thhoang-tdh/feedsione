@@ -38,7 +38,9 @@ urlpatterns = [
         views.FolderArticlesView.as_view(),
         name='folder_articles'),
 
-    # List feeds
+    #####################################
+    #          List of feeds
+    #####################################
     path(
         'feeds/',
         views.FeedListView.as_view(),
@@ -70,6 +72,10 @@ urlpatterns = [
         views.ArticleDetailView.as_view(),
         name='article_detail'),
 
+
+    #####################################
+    #          Mark an article as
+    #####################################
     path(
         'article/mark-as-read/',
         views.mark_as_read,
