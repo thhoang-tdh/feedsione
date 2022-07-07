@@ -9,4 +9,4 @@ hiredis==2.0.0  # https://github.com/redis/hiredis-py
 
 # Django
 # ------------------------------------------------------------------------------
-django-anymail[mailgun,sendgrid]==8.6  # https://github.com/anymail/django-anymail
+django-anymail[mailgun]==8.6  # https://github.com/anymail/django-anymail
