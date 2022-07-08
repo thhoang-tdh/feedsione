@@ -49,6 +49,11 @@ img {
   max-height: auto !important;
 }
 
+.card-rounded {
+  padding: .5em;
+  border-radius: 1em !important;
+  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
 
 .dropdown-toggle::after {
   content: none;

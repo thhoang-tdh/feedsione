@@ -1,34 +1,59 @@
-{% extends "base.html" %}
+{% extends "account_base.html" %}
 {% load static %}
 
 {% block title %}User: {{ object.username }}{% endblock %}
 
-{% block content %}
-<div class="container">
+{% block inner %}
 
-  <div class="row">
-    <div class="col-sm-12">
+<div class=" mx-auto">
 
-      <h2>{{ object.username }}</h2>
+  <div class="card shadow mx-3 card-rounded">
+    <div class="card-header bg-white border-0">
+      <h4>
+        <span class="border-bottom border-2 border-primary fw-bold">
+          Logged as: {{ object.username }}
+        </span>
+      </h4>
+    </div>
+
+    <div class="card-body">
       {% if object.name %}
-        <p>{{ object.name }}</p>
+      <div class="mb-3">
+        <span><strong>Name: </strong></span>
+        <span>{{ object.name }}</span>
+      </div>
+      {% endif %}
+
+
+      {% if object == request.user %}
+      <!-- Action buttons -->
+      <div class="row">
+
+        <div class="col-sm-12">
+          <a class="btn btn-secondary rounded-5 px-5"
+             href="{% url 'users:update' %}"
+             role="button">Edit</a>
+          <a class="btn btn-secondary rounded-5 px-5"
+             href="{% url 'account_email' %}"
+             role="button">E-Mail</a>
+          <!-- Your Stuff: Custom user template urls -->
+        </div>
+
+      </div>
+      <!-- End Action buttons -->
       {% endif %}
     </div>
   </div>
 
-{% if object == request.user %}
-<!-- Action buttons -->
-<div class="row">
-
-  <div class="col-sm-12">
-    <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
-    <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
-    <!-- Your Stuff: Custom user template urls -->
-  </div>
-
 </div>
-<!-- End Action buttons -->
-{% endif %}
 
-</div>
-{% endblock content %}
+
+
+{% endblock inner %}
+
+
+
+
+
+
+

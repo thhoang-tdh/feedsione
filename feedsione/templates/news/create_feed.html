@@ -6,59 +6,30 @@
 {% block content %}
 
 <div class="container">
-  <div class="row mt-5">
-    <div class="col-md-10 offset-md-1">
-      <div class="card mt-5">
-        <div class="card-header border-0 cbg-white">
-          <h3 class="border-bottom border-3 border-primary pt-3">
-            <strong>Add new feed</strong>
-          </h3>
-        </div>
-        <div class="card-body">
-          <form action="." method="POST">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <div class="text-center mb-3 mt-5">
-              <button type="submit"
-                      class="btn btn-block btn-secondary fw-bold opacity-75 rounded-pill w-75 p-auto">
-                      SUBMIT
-              </button>
-            </div>
-          </form>
-        </div>
 
+  <div class="col-md-10 mx-auto">
+    <div class="card mt-5 shadow card-rounded">
+      <div class="card-header bg-white ">
+        <h3 class="border-bottom border-3 border-primary pt-3">
+          <strong>Add new feed</strong>
+        </h3>
       </div>
+      <div class="card-body">
+        <form action="." method="POST">
+          {% csrf_token %}
+          {{ form|crispy }}
+          <div class="text-center mb-3 mt-5">
+            <button type="submit"
+                    class="btn btn-block btn-secondary fw-bold opacity-75 rounded-pill w-75 p-auto">
+                    SUBMIT
+            </button>
+          </div>
+        </form>
+      </div>
+
     </div>
   </div>
 
 </div>
 
 {% endblock %}
-
-
-
-<div class="container">
-  <div class="row mt-5">
-    <div class="col-md-10 offset-md-1">
-      <div class="card mt-5">
-        <div class="card-body">
-          <h3>Add new folder</h3>
-          <form action="."
-                method="POST">
-            <div class="mt-5">
-              {% csrf_token %}
-              {{ form|crispy }}
-            </div>
-            <div class="text-center mb-3 mt-5">
-              <button type="submit"
-                      class="btn btn-block btn-info opacity-75 rounded-pill w-75 p-auto">
-                SUBMIT
-              </button>
-
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>

@@ -4,6 +4,10 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
+from django.http import Http404
+from django.http import (HttpResponse, HttpResponseBadRequest,
+                         HttpResponseForbidden)
+from django.shortcuts import render
 
 User = get_user_model()
 
@@ -13,6 +17,19 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
     slug_field = "username"
     slug_url_kwarg = "username"
+
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+            if self.object != request.user:
+                return render(request, '403.html', status=403)
+
+            context = self.get_context_data(object=self.object)
+
+            return self.render_to_response(context)
+        except :
+            return render(request, '403.html', status=403)
+
 
 
 user_detail_view = UserDetailView.as_view()
