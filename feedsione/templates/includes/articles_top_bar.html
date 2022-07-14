@@ -7,8 +7,112 @@
 		<div class="container">
 			<div class="row w-100 mb-1 align-items-center">
 
-				<div class="nav-brand col-6 col-sm-8 col-md-8 d-block float-left">
-					<strong>{{ page_header }}</strong>
+				<div class="nav-brand col-6 col-sm-8 col-md-8 d-block float-left overflow-y-hidden">
+					{% if list_type != alt.FOLDER %}
+					<div><strong class="">{{ page_header }}</strong></div>
+					{% else %}
+					<div class="btn-group">
+						<button type="button"
+										style="white-space: normal;"
+										class=" dropdown-toggle"
+										data-bs-toggle="dropdown"
+										aria-expanded="false">
+							<span><i class="bi bi-folder"></i></span>
+							<span class="ms-1">{{ page_header }}</span>
+							<span><i class="bi bi-chevron-down"></i></span>
+						</button>
+
+						<ul class="dropdown-menu">
+							<li>
+								<a class="dropdown-item"
+									 href="#">
+									Manage Feeds
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item"
+									 type="button"
+									 data-bs-toggle="modal"
+									 data-bs-target="#renameModal">
+									Rename
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item"
+									 href="#">
+									Delete Folder
+								</a>
+							</li>
+						</ul>
+
+						<div class="modal fade"
+								 id="logoutModal"
+								 tabindex="-1">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title"
+												id="staticBackdropLabel">Logout</h5>
+										<button type="button"
+														class="btn-close"
+														data-bs-dismiss="modal"
+														aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<p>Are you sure you want toxxxxxx sign out?</p>
+									</div>
+									<form method="post"
+												action="{% url 'account_logout' %}">
+										{% csrf_token %}
+										{% if redirect_field_value %}
+										<input type="hidden"
+													 name="{{ redirect_field_name }}"
+													 value="{{ redirect_field_value }}" />
+										{% endif %}
+										<div class="modal-footer">
+											<button type="button"
+															class="btn btn-secondary"
+															data-bs-dismiss="modal">Close</button>
+											<button type="submit"
+															class="btn btn-primary">Sign Out</button>
+										</div>
+									</form>
+
+								</div>
+							</div>
+						</div>
+
+
+
+					</div>
+
+					{% endif %}
+
+
+
+
+
+<!--
+					<button type="button"
+					class="left-nav-dock-link"
+					data-bs-toggle="modal"
+					data-bs-target="#logoutModal">
+					<span class="left-nav-dock-icon"><i class="bi bi-box-arrow-right"></i></span>
+	</button>
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
 				</div>
 
 				<!-- Right elements -->

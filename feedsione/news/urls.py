@@ -5,6 +5,9 @@ from feedsione.news import views
 
 app_name = 'news'
 urlpatterns = [
+    path('',
+         views.home,
+         name='homepage'),
     path(
         'dashboard/',
         views.ArticleListView.as_view(),

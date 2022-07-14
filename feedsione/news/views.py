@@ -1,4 +1,5 @@
 from dataclasses import fields
+import enum
 import json
 from django.shortcuts import render, redirect
 
@@ -18,6 +19,11 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import F
 
 
+
+def home(request):
+    return redirect('account_login')
+
+
 class ArticleDetailView(DetailView):
     model = Article
     template_name = 'news/article_detail.html'
@@ -34,6 +40,19 @@ class ArticleDetailView(DetailView):
         context['ua'] = ua
 
         return context
+
+
+
+
+
+class ArticleListType(enum.Enum):
+    DEFAULT = 0
+    TODAY = 1
+    READ_LATER = 2
+    SAVED = 3
+    ALL = 4
+    FOLDER = 5
+    FEED = 6
 
 
 class ArticleListView(LoginRequiredMixin, ListView):
@@ -62,6 +81,8 @@ class ArticleListView(LoginRequiredMixin, ListView):
     def get_context_data(self, *arg, **kwargs):
         context = super(ArticleListView, self).get_context_data(*arg, **kwargs)
         context['page_header'] = 'Articles'
+        context['list_type'] = ArticleListType.DEFAULT
+        context['alt'] = ArticleListType(0)
         context['from_single_feed'] = False
         return context
 
@@ -104,6 +125,7 @@ class AllArticlesView(ArticleListView):
     def get_context_data(self, *arg, **kwargs):
         context = super(AllArticlesView, self).get_context_data(*arg, **kwargs)
         context['page_header'] = 'All articles'
+        context['list_type'] = ArticleListType.ALL
         return context
 
 
@@ -117,6 +139,7 @@ class TodayArticlesView(AllArticlesView):
     def get_context_data(self, *arg, **kwargs):
         context = super(TodayArticlesView, self).get_context_data(*arg, **kwargs)
         context['page_header'] = 'Today'
+        context['list_type'] = ArticleListType.TODAY
         return context
 
 class ReadLaterArticlesView(ArticleListView):
@@ -130,6 +153,7 @@ class ReadLaterArticlesView(ArticleListView):
     def get_context_data(self, *arg, **kwargs):
         context = super(ReadLaterArticlesView, self).get_context_data(*arg, **kwargs)
         context['page_header'] = 'Read later'
+        context['list_type'] = ArticleListType.READ_LATER
         return context
 
 class SavedArticlesView(ArticleListView):
@@ -142,6 +166,7 @@ class SavedArticlesView(ArticleListView):
     def get_context_data(self, *arg, **kwargs):
         context = super(SavedArticlesView, self).get_context_data(*arg, **kwargs)
         context['page_header'] = 'Saved'
+        context['list_type'] = ArticleListType.SAVED
         return context
 
 
@@ -159,6 +184,7 @@ class FeedArticlesView(ArticleListView):
         context['page_header'] = self.feed.title
         context['from_single_feed'] = True
         context['feed'] = self.feed
+        context['list_type'] = ArticleListType.FEED
         return context
 
 
@@ -174,6 +200,7 @@ class FolderArticlesView(ArticleListView):
     def get_context_data(self, *arg, **kwargs):
         context = super(FolderArticlesView, self).get_context_data(*arg, **kwargs)
         context['page_header'] = self.folder.name
+        context['list_type'] = ArticleListType.FOLDER
         return context
 
 

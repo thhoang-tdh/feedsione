@@ -46,17 +46,34 @@
 		<div class="folder-wrapper">
 			<div
 					 class="leftNavList-row-head nl-folder {% if request.path == folder.get_absolute_url %}leftNavList-active{% endif %}">
+
 				<span onclick="expand_tree('{{ folder.slug }}')"
 							id="plus_{{folder.slug}}"
-							class="flex-shrink-0 flex-start ">
+							class="">
 					<span class="leftNavList-row-icon"><i class="bi bi-chevron-right"></i></span>
 				</span>
 
-				<a href="{{ folder.get_absolute_url }}">
-					<span class="flex-shrink-1 flex-grow-1 ms-3">{{ folder.name|truncatechars:30 }}</span>
-					<!-- <span class="tc-1-l">count???</span> -->
+				<a href="{{ folder.get_absolute_url }}"
+					 class="d-flex justify-content-between w-100 nl-folder-link">
+						<div class="ms-3">{{ folder.name|truncatechars:25 }}</div>
+
+						<!-- <span>110</span> -->
+
+						<!-- <button class="nl-folder-edit-button mx-2 "
+										onclick="console.log('clicked');"
+										id="dropdownMenuLink"
+										data-bs-toggle="dropdown"
+										aria-expanded="false">
+								<i class="bi bi-three-dots-vertical"></i>
+						</button> -->
+
+					<!-- <span class="flex-shrink-1 flex-grow-1 ms-3">{{ folder.name|truncatechars:30 }}</span>
+					<span class="tc-1-l">count???</span> -->
+
 				</a>
 			</div>
+
+
 
 			<div id="child_{{folder.slug}}"
 					 class="visually-hidden">
@@ -70,10 +87,13 @@
 					</a>
 					<!-- <span class="tc-1-l">unread count??? </span> -->
 				</div>
+
 				{% endfor %}
 			</div>
 		</div>
 		{% endfor %}
+
+
 
 		<!-- new folder button -->
 		<div class="leftNavList-row">
@@ -81,8 +101,6 @@
 				<span><strong>Create New Folder</strong></span>
 			</a>
 		</div>
-
-
 
 
 
