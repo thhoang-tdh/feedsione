@@ -268,7 +268,7 @@ class FeedCreateView(LoginRequiredMixin, CreateView):
 
         # create period task
         schedule, created = IntervalSchedule.objects.get_or_create(
-            every=feed.frequency,
+            every=feed.frequency*5,
             period=IntervalSchedule.MINUTES
         )
 
