@@ -102,8 +102,8 @@ class Folder(BaseModel):
         return reverse('news:folder_articles', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
-        if not self.id:
-            self.slug = unique_slug_generator(self, self.name)
+        # if not self.id:
+        self.slug = unique_slug_generator(self, self.name)
             # self.slug = slugify(shortuuid.ShortUUID().random(length=12) + ' ' + self.name)
         super(Folder, self).save(*args, **kwargs)
 

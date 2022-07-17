@@ -68,7 +68,7 @@ class SearchArticleResultsView(ListView):
                                         headline=SearchHeadline(
                                                 'title',
                                                 query,
-                                                start_sel='<span class="cbg-info">',
+                                                start_sel='<span class="bg-info">',
                                                 stop_sel='</span>',
                                             )
                                     ).filter(

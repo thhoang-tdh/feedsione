@@ -44,7 +44,7 @@ class FeedAdmin(admin.ModelAdmin):
 # admin.site.register(Folder)
 @admin.register(Folder)
 class FolderAdmin(admin.ModelAdmin):
-    list_display = ('name', )
+    list_display = ('name', 'slug')
 
 
 @admin.register(FeedSubscription)

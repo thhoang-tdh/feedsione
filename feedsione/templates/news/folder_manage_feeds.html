@@ -1,0 +1,156 @@
+{% extends '../db_base.html' %}
+{% load static %}
+{% block title %}Search Feeds{% endblock %}
+{% load tz %}
+
+{% block content %}
+
+<div class="container mt-3">
+  <div class="border-bottom border-secondary">
+    <span>
+      <small>Manage folder:</small>
+    </span>
+    <div class="btn-group">
+      <button type="button"
+              style="white-space: normal;"
+              class=" dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false">
+        <span class="ms-1 fs-4"><strong>{{current_folder.name}}</strong></span>
+        <span><i class="bi bi-chevron-down"></i></span>
+      </button>
+
+      <ul class="dropdown-menu">
+        <li>
+          <a class="dropdown-item"
+             href="{% url 'news:folder_update' slug=current_folder.slug %}">
+            Rename
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item"
+             href="#"
+             data-bs-toggle="modal"
+             data-bs-target="#deleteFolderModal">
+            Delete Folder
+          </a>
+        </li>
+
+      </ul>
+    </div>
+
+
+  </div>
+
+  <!-- SEARCH RESULTS -->
+  <div class="result mt-4">
+
+    {% for feed in feeds %}
+    <div class="card mb-2 col-12 col-sm-12 col-md-10 col-lg-10">
+      <div class="card-body mb-4">
+        <div class="d-flex justify-content-between">
+          <div class="col">
+            <div class="fw-bold">
+              <a href="{{ feed.get_absolute_url }}">{{feed.title}}</a>
+            </div>
+            <div>
+              <span class="opacity-50">
+                <small>
+                  {{ feed.source }}
+                </small>
+              </span>
+            </div>
+
+            <div>
+
+            </div>
+
+
+          </div>
+          <div>
+            <div class="btn-group">
+              {% if feed.folders.all %}
+                <button type="button"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        class="btn btn-sm btn-outline-secondary">
+                  <span>FOLLOWING</span>
+                </button>
+              {% else %}
+                <button type="button"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        class="btn btn-sm btn-outline-primary">
+                  <span>FOLLOW</span>
+                </button>
+              {% endif %}
+
+              <ul class="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="navbarDropDownMenuFollow">
+                {% for folder in folders %}
+                <li>
+                  {% if folder in feed.folders.all %}
+                  <a
+                    class="dropdown-item d-flex justify-content-between"
+                    role="button"
+                    name="feed-subscription"
+                    data-slug-feed="{{ feed.slug }}"
+                    data-slug-folder="{{ folder.slug }}"
+                    data-subscription-action="remove"
+                    >
+                    <div>{{ folder }}</div>
+                    <div class="btn-action">
+                      <span class="badge bg-warning opacity-50 ms-5">REMOVE</span>
+                    </div>
+                  </a>
+                  {% else %}
+                  <a
+                    class="dropdown-item d-flex justify-content-between"
+                    role="button"
+                    name="feed-subscription"
+                    data-slug-feed="{{ feed.slug }}"
+                    data-slug-folder="{{ folder.slug }}"
+                    data-subscription-action="add"
+                    >
+                    <div>{{ folder }}</div>
+                    <div class="btn-action">
+                      <span class="badge bg-primary opacity-50 ms-5">ADD</span>
+                    </div>
+                  </a>
+                  {% endif %}
+                </li>
+
+
+                {% endfor %}
+
+                <li>
+                  <a href="{% url 'news:folder_create' %}"
+                    class="dropdown-item mt-3 border-top border-light">
+                    <div class="text-primary opacity-75">
+                      <span>Create new folder</span>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    {% empty %}
+      {% if request.GET.q != None %}
+      <div>No results</div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+</div>
+
+
+{% endblock %}
+

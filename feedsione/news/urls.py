@@ -49,11 +49,22 @@ urlpatterns = [
         views.FeedListView.as_view(),
         name='feeds'),   # list feeds
 
-    # Add new feed, folder
+    # Create, edit, delete folder
     path(
         'folder/create/',
         views.FolderCreateView.as_view(),
         name='folder_create'),
+    path('folder/<slug:slug>/update/',
+        views.FolderUpdateView.as_view(),
+        name='folder_update'),
+    path('folder/<slug:slug>/delete/',
+        views.FolderDeleteView.as_view(),
+        name='folder_delete'),
+    path('folder/<slug:slug>/manage/',
+        views.FolderManageView.as_view(),
+        name='folder_manage'),
+
+    # Create feed
     path(
         'feed/create/',
         views.FeedCreateView.as_view(),

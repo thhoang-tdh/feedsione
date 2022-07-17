@@ -11,7 +11,7 @@ services:
       dockerfile: ./compose/local/django/Dockerfile
     image: feedsione_local_django
     container_name: feedsione_local_django
-    platform: linux/x86_64
+    platform: linux/arm64 # linux/x86_64
     depends_on:
       - postgres
       - redis

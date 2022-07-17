@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from feedsione.news.models import *
 from feedsione.news.forms import *
 from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic.edit import UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render
@@ -14,7 +15,7 @@ from django.urls import reverse_lazy
 from datetime import timedelta
 from django.utils import timezone
 from itertools import chain
-from django.http import HttpResponseRedirect, JsonResponse, HttpResponseBadRequest
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponseBadRequest, Http404
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
 
@@ -40,8 +41,6 @@ class ArticleDetailView(DetailView):
         context['ua'] = ua
 
         return context
-
-
 
 
 
@@ -201,6 +200,8 @@ class FolderArticlesView(ArticleListView):
         context = super(FolderArticlesView, self).get_context_data(*arg, **kwargs)
         context['page_header'] = self.folder.name
         context['list_type'] = ArticleListType.FOLDER
+        context['folder'] = self.folder
+
         return context
 
 
@@ -233,6 +234,27 @@ class FolderCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
 
+class FolderUpdateView(LoginRequiredMixin, UpdateView):
+    model = Folder
+    form_class = FolderCreateForm
+    template_name = 'news/folder_update.html'
+
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(FolderUpdateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs['user'] = self.request.user
+        return kwargs
+
+
+class FolderDeleteView(LoginRequiredMixin, DeleteView):
+    model = Folder
+    success_url = reverse_lazy('news:articles_today')
+
+    def get_queryset(self):
+        qs = super(FolderDeleteView, self).get_queryset()
+        return qs.filter(user=self.request.user)
+
+
+
 class FeedCreateView(LoginRequiredMixin, CreateView):
     template_name = 'news/create_feed.html'
     form_class = FeedCreateForm
@@ -245,6 +267,30 @@ class FeedCreateView(LoginRequiredMixin, CreateView):
         kwargs = super(FeedCreateView, self).get_form_kwargs(*args, **kwargs)
         kwargs['user'] = self.request.user
         return kwargs
+
+
+class FolderManageView(LoginRequiredMixin, ListView):
+    model = Feed
+    template_name = 'news/folder_manage_feeds.html'
+    context_object_name = 'feeds'
+
+    def get_queryset(self):
+        self.folder = get_object_or_404(Folder, slug=self.kwargs['slug'], user=self.request.user)
+
+        try:
+            feeds = Feed.objects.filter(folders__in=[self.folder])
+        except:
+            raise Http404("User does not exist")
+
+        return feeds
+
+    def get_context_data(self, *arg, **kwargs):
+        context = super(FolderManageView, self).get_context_data(*arg, **kwargs)
+        context['folders'] = Folder.objects.filter(user=self.request.user)
+        context['current_folder'] = self.folder
+        return context
+
+
 
 
 @login_required

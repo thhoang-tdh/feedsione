@@ -1,3 +1,7 @@
+
+{% include '../includes/modal_folder_delete.html' %}
+
+
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg sticky-top bg-light">
 	<!-- Container wrapper -->
@@ -31,58 +35,20 @@
 							</li>
 							<li>
 								<a class="dropdown-item"
-									 type="button"
-									 data-bs-toggle="modal"
-									 data-bs-target="#renameModal">
+									 href="{% url 'news:folder_update' slug=folder.slug %}">
 									Rename
 								</a>
 							</li>
 							<li>
 								<a class="dropdown-item"
-									 href="#">
+									 href="#"
+                   data-bs-toggle="modal"
+                   data-bs-target="#deleteFolderModal">
 									Delete Folder
 								</a>
 							</li>
+
 						</ul>
-
-						<div class="modal fade"
-								 id="logoutModal"
-								 tabindex="-1">
-							<div class="modal-dialog">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h5 class="modal-title"
-												id="staticBackdropLabel">Logout</h5>
-										<button type="button"
-														class="btn-close"
-														data-bs-dismiss="modal"
-														aria-label="Close"></button>
-									</div>
-									<div class="modal-body">
-										<p>Are you sure you want toxxxxxx sign out?</p>
-									</div>
-									<form method="post"
-												action="{% url 'account_logout' %}">
-										{% csrf_token %}
-										{% if redirect_field_value %}
-										<input type="hidden"
-													 name="{{ redirect_field_name }}"
-													 value="{{ redirect_field_value }}" />
-										{% endif %}
-										<div class="modal-footer">
-											<button type="button"
-															class="btn btn-secondary"
-															data-bs-dismiss="modal">Close</button>
-											<button type="submit"
-															class="btn btn-primary">Sign Out</button>
-										</div>
-									</form>
-
-								</div>
-							</div>
-						</div>
-
-
 
 					</div>
 
@@ -100,15 +66,6 @@
 					<span class="left-nav-dock-icon"><i class="bi bi-box-arrow-right"></i></span>
 	</button>
  -->
-
-
-
-
-
-
-
-
-
 
 
 
@@ -338,3 +295,6 @@
 	<!-- Container wrapper -->
 </nav>
 <!-- Navbar -->
+
+
+
