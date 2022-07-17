@@ -19,6 +19,9 @@ from django.http import HttpResponseRedirect, JsonResponse, HttpResponseBadReque
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
 
+from django_celery_beat.models import PeriodicTask, IntervalSchedule
+import json
+
 
 
 def home(request):
@@ -261,6 +264,21 @@ class FeedCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         feed = form.save()
+        feed.download_feed_articles()
+
+        # create period task
+        schedule, created = IntervalSchedule.objects.get_or_create(
+            every=feed.frequency,
+            period=IntervalSchedule.MINUTES
+        )
+
+        PeriodicTask.objects.create(
+            interval=schedule,
+            name="Fetch " + feed.title,
+            task="news.tasks.get_articles",
+            kwargs=json.dumps({'feed_id': feed.id})
+        )
+
         return HttpResponseRedirect(feed.get_absolute_url())
 
     def get_form_kwargs(self, *args, **kwargs):
