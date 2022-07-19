@@ -86,7 +86,7 @@
 
 					{% if from_single_feed  %}
 						<div class="btn-group">
-							{% if feed.folders.all %}
+							{% if followed_in_folders %}
 								<button type="button"
 												role="button"
 												data-bs-toggle="dropdown"
@@ -108,7 +108,7 @@
 									aria-labelledby="navbarDropDownMenuFollow">
 								{% for folder in folders %}
 								<li>
-									{% if folder in feed.folders.all %}
+									{% if folder in followed_in_folders %}
 									<a
 										class="dropdown-item d-flex justify-content-between"
 										role="button"

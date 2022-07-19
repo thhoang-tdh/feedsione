@@ -186,6 +186,8 @@ class FeedArticlesView(ArticleListView):
         context['page_header'] = self.feed.title
         context['from_single_feed'] = True
         context['feed'] = self.feed
+        context['followed_in_folders'] = self.feed.folders.filter(user=self.request.user)
+
         context['list_type'] = ArticleListType.FEED
         return context
 
