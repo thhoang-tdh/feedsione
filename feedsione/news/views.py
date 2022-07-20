@@ -277,7 +277,7 @@ class FeedCreateView(LoginRequiredMixin, CreateView):
         PeriodicTask.objects.create(
             interval=schedule,
             name="Fetch " + feed.title,
-            task="news.tasks.get_articles",
+            task="feedsione.news.tasks.get_articles",
             kwargs=json.dumps({'feed_id': feed.id})
         )
 
