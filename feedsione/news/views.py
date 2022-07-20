@@ -1,6 +1,7 @@
 from dataclasses import fields
 import enum
 import json
+import uuid
 from django.shortcuts import render, redirect
 
 from feedsione.news.models import *
@@ -276,7 +277,7 @@ class FeedCreateView(LoginRequiredMixin, CreateView):
 
         PeriodicTask.objects.create(
             interval=schedule,
-            name="Fetch " + feed.title,
+            name="Fetch " + feed.title + " " + str(shortuuid.uuid()),
             task="feedsione.news.tasks.get_articles",
             kwargs=json.dumps({'feed_id': feed.id})
         )
