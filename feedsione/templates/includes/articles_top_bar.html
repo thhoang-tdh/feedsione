@@ -29,7 +29,7 @@
 						<ul class="dropdown-menu">
 							<li>
 								<a class="dropdown-item"
-									 href="#">
+									 href="{% url 'news:folder_manage' slug=folder.slug %}">
 									Manage Feeds
 								</a>
 							</li>
@@ -41,7 +41,7 @@
 							</li>
 							<li>
 								<a class="dropdown-item"
-									 href="{% url 'news:folder_manage' slug=folder.slug %}"
+									 href="#"
                    data-bs-toggle="modal"
                    data-bs-target="#deleteFolderModal">
 									Delete Folder
